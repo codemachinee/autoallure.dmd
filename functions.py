@@ -1,4 +1,11 @@
 from telebot import types
+# библиотека работы с гугл таблицами
+import gspread
+import oauth2client
+# библиотека проверки даты
+from datetime import datetime
+# библиотека рандома
+from random import *
 
 
 def marks_buttons(bot, message):
@@ -71,6 +78,7 @@ class search_models:
                                                                f'Стоимость услуг для Вашего автомобиля {auto_model}\n'
                                                                'соответствует первому ценовому классу.')
                     model_buttons(self.bot, self.message).zayavka_buttons()
+                    clients_base(self.bot, self.message, auto_model).chec_and_record()
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
@@ -136,7 +144,21 @@ def zayavka_done(bot, message):
                                    f'Быстрее согласуй дату и закрой заявку пока он не слился')
 
 
+class clients_base:
 
+    def __init__(self, bot, message, auto_model):
+        self.bot = bot
+        self.message = message
+        self.auto_model = auto_model
+        gc = gspread.service_account(filename='base_key.json')
+        sh = gc.open('autoallure.dmd')
+        self.worksheet = sh.get_worksheet('общая база клиентов')
 
+    def chec_and_record(self):
+        worksheet_len = len(self.worksheet.get_all_values)
+        if self.message.from_user.username in self.worksheet.get_all_values:
+            print(worksheet_len, 'в базе')
+        else:
+            print('не в базе')
 
 

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "beaming-caster-366519",
+  "private_key_id": "bd314976a00b52274819315308fa0c5c76ffa3e7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDC1wnIcHt20yU8\nrUbFl+Cx9oQPggCwad+KYbKXaiVhQmtRT808uba/OdNYF50OD1fY5WuDArfnc0K0\nSXXRKFUYsZv5TBcEsO1uUOsZ9Oh5nmjTg0faIjjqLwU7mXBUwN6bJpZI4rTYarhl\nu0hm6FwdaxntMESIYbt4i5fORDq2iT48MAn4jhprPiahNF+jAGAEX6vxMRnHdgQp\nt1JZSogAS0Qn6zwTJMXuSOCZMtqJDQb4V/A5/LjVPwS6cTJRTZvWwMMmWBUDsaz/\nySXIS+zjvqbhqUQ+COz+cChxgXWraVcl9ysq08xKrw3Ybpcb+i41G1XjKz2C31OJ\nkXuHtgmPAgMBAAECggEACb1OE+LriQkM93eB7ialaL/14gCRoD/qmLRBhSgdLjtv\nueTPUZXG+NAfLGwhwa4qqgDt2uKr5rnwP6rcZNQrTMy0C0YucGGXvMf2uJlxdYLh\nopERamoDhlFLZatJ3jK17fOD16jdeWP8S7mM6Pf8gsvzw9OB2X9pK6FuuTTX6n/j\nZw8G84nayJ362NN7KtsDV+vHFVLJp6gcID7qbZw+PBvMY6YaCAGWqxlDKFEvkrmv\nS270kbHeVu4yASFXz7y/mZXsOcEYBeiQucSvmRTjNMafjYrx9PX/074W/CLpOVxM\nrDmEC3i6kfs8xERqNsMSbrc4PucJ3zQtFgApxufuAQKBgQDvMlzXqY6CJzPZqcD7\nXFfuSeeboM93rhiyH8BadOWakUikGl+WZIqSg5GIWarZVlClaFbPTtWDkhN9BhkM\n6JVrtLVFFe5VWsx7cd2etRCGgKzcp07fk84tT8UT7ffa5fFlPtyMzaCEHNJ8TcO1\nTQzyD5gtjBJBx4ikisMuNgACwQKBgQDQhvpsj1N/EQfXh/3dD3liztrqZ/2wSV0G\nXh9k8LBFPXbdXG7CRjtH/kHzyanFgMgZ5SlzY032/0yXEssZwmKYCduG12vMPaK4\nt7HoJfLcGSiVE7YEZhddtbUumKUBRnGI1g3ILBC9Lvh8Uz/Jfd5zVTUYO6WVCBKE\n8KRvJnEwTwKBgFMhpMTLSB0R9OJMLibuFB1cECO1gwVsO2cEw/xsLjRHFAD8rYX+\nUW7UTSsfRtKcPhEOr0UDeA9vIFjOWrxyxSOWvX1SPu/pS7IHg+eZtDGa3PkfKLlp\njDmRRMRFa2PnkLsIWuyQtp3Tyo+rEz6alco3A0OpL9sutt3A4E7aM6zBAoGBAJ4Q\nQpC5j9P4h9YzKhY/3YYtQDmAfAb9hTsHa4qq+yJw9cHTh81RSSxIKZvul/ayqHsg\nfuwNMRLx8A9v2m37L5sJldK/ReH6MncMHxnWciGuHFnsKANrk3if/OeGI0U1LWhI\nwQejh0iv6wDqZaaI9266/tUQmXG/PbJxamMqY4/3AoGAI5PAR4ij+qX7iaCz1SYY\nthgFJVOL7NA1tD35k9mw+aRhbytW3QnxfsjSWqfWjdqgeEF0e0c0m8EJY0lFcwBt\nX1mqz87Dmatlh4ozokRGw4bFVBunIqNnw9L0N3c/a2uwbXrvU+kg21bMErX+Ixg0\nBa2ezxQLw0940c8wobBuK1w=\n-----END PRIVATE KEY-----\n",
+  "client_email": "autoallure-dmd@beaming-caster-366519.iam.gserviceaccount.com",
+  "client_id": "104167077046932161881",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/autoallure-dmd%40beaming-caster-366519.iam.gserviceaccount.com"
+}

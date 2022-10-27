@@ -207,6 +207,8 @@ def chek_message_auto(m):
 
 
 def redkoe_auto(message):
+    global auto_model
+    auto_model = message.text
     bot.send_message(message.chat.id, 'Cпасибо! Я передал информацию мастеру. Прайс будет выслан Вам в ближайшее '
                                       'время.')
     bot.send_message('1338281106', f'🚨!!!СРОЧНО!!!🚨\n'
@@ -214,7 +216,7 @@ def redkoe_auto(message):
                                    f'Имя: {message.from_user.first_name}\n'
                                    f'Фамилия: {message.from_user.last_name}\n'
                                    f'Псевдоним: @{message.from_user.username}\n'
-                                   f'Авто: {message.text}\n'
+                                   f'Авто: {auto_model}\n'
                                    f'Быстрее отправь прайс на его корыто пока он не слился')
 
 
