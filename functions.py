@@ -78,12 +78,13 @@ class search_models:
                                                                f'Стоимость услуг для Вашего автомобиля {auto_model}\n'
                                                                'соответствует первому ценовому классу.')
                     model_buttons(self.bot, self.message).zayavka_buttons()
-                    clients_base(self.bot, self.message, auto_model).chec_and_record()
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
-                                                   f'Псевдоним: @{message.from_user.username}\n'
+                                                   f'Никнейм: {message.from_user.username}\n'
+                                                   f'Ссылка: @{message.from_user.username}\n'
                                                    f'Авто: {auto_model} 1 класса')
+                    clients_base(self.bot, self.message, self.auto_model).chec_and_record()
 
                 if text.find(i) >= 0 and klass == self.klass_second:
                     file_open = open("2 class.png", 'rb')
@@ -94,8 +95,10 @@ class search_models:
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
-                                                   f'Псевдоним: @{message.from_user.username}\n'
+                                                   f'Никнейм: {message.from_user.username}\n'
+                                                   f'Ссылка: @{message.from_user.username}\n'
                                                    f'Авто: {auto_model} 2 класса')
+                    clients_base(self.bot, self.message, self.auto_model).chec_and_record()
 
                 if text.find(i) >= 0 and klass == self.klass_third:
                     file_open = open("3 class.png", 'rb')
@@ -106,8 +109,10 @@ class search_models:
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
-                                                   f'Псевдоним: @{message.from_user.username}\n'
+                                                   f'Никнейм: {message.from_user.username}\n'
+                                                   f'Ссылка: @{message.from_user.username}\n'
                                                    f'Авто: {auto_model} 3 класса')
+                    clients_base(self.bot, self.message, self.auto_model).chec_and_record()
 
 
 class model_buttons:
@@ -141,24 +146,54 @@ def zayavka_done(bot, message):
     bot.send_message('1338281106', f'🚨!!!СРОЧНО!!!🚨\n'
                                    f'Хозяин, поступила ЗАЯВКА от:\n'
                                    f'Псевдоним: @{message.from_user.username}\n'
-                                   f'Быстрее согласуй дату и закрой заявку пока он не слился')
+                                   f'Быстрее согласуй дату и закрой заявку пока он не слился'
+                                   f'\n'
+                                   f'В случае положительной отработки заявки не забудь перевести клиента из базы '
+                                   f'"потенциальные клиенты" в базу "старые клиенты" с помощью команды\n '
+                                   f'/next_level_base')
 
 
 class clients_base:
 
-    def __init__(self, bot, message, auto_model):
+    def __init__(self, bot, message, auto_model, perehvat=None):
         self.bot = bot
         self.message = message
         self.auto_model = auto_model
+        self.perehvat = perehvat
         gc = gspread.service_account(filename='base_key.json')
-        sh = gc.open('autoallure.dmd')
-        self.worksheet = sh.get_worksheet('общая база клиентов')
+        sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit")
+        self.worksheet = sh.worksheet('общая база клиентов')
+        self.worksheet2 = sh.worksheet('потенциальные клиенты')
+        self.worksheet3 = sh.worksheet('старые клиенты')
 
     def chec_and_record(self):
-        worksheet_len = len(self.worksheet.get_all_values)
-        if self.message.from_user.username in self.worksheet.get_all_values:
-            print(worksheet_len, 'в базе')
+        worksheet_len = len(self.worksheet.col_values(2)) + 1
+        worksheet_len2 = len(self.worksheet2.col_values(2)) + 1
+        self.bot.send_message('1338281106', 'Пробиваю базу..')
+        self.bot.send_message('1338281106', '...')
+        if self.message.from_user.username in self.worksheet.col_values(2):
+            self.bot.send_message('1338281106', ' Клиент есть в базе')
         else:
-            print('не в базе')
+            self.bot.send_message('1338281106', f'Клиент добавлен в базу\n'
+                    f'База: '
+                    f'https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit#gid=0')
+            self.worksheet.update(f'A{worksheet_len}:F{worksheet_len}', [[self.message.chat.id, self.message.from_user.username,
+                                             self.message.from_user.first_name, self.message.from_user.last_name,
+                                             self.auto_model, str(datetime.now().date())]])
+            self.worksheet2.update(f'A{worksheet_len2}:F{worksheet_len2}',
+                                  [[self.message.chat.id, self.message.from_user.username,
+                                    self.message.from_user.first_name, self.message.from_user.last_name,
+                                    self.auto_model, str(datetime.now().date())]])
+
+    def perevod_v_bazu(self):
+        worksheet_len3 = len(self.worksheet3.col_values(2)) + 1
+        cell = self.worksheet.find(self.perehvat)
+        self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet.row_values(cell.row)])
+        self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])
+        self.bot.send_message('1338281106', 'Птичка в клетке ✅')
+
+
+
+
 
 

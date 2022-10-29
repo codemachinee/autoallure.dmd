@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-from functions import marks_buttons, model_buttons, search_models, zayavka_done
+from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base
 
 token = '5380562272:AAFqodiUpENCtx7oD8f5xnbIDNOoxJW6YMY'
 bot = telebot.TeleBot(token)
@@ -24,15 +24,34 @@ def start(message):
 def help(message):
     kb2 = types.ReplyKeyboardRemove()
     bot.send_message(message.chat.id, '...', reply_markup=kb2)
-    bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
-                                      f'/price -  рассчет услуг для любого авто\n'
-                                      f'/start - инициализация бота\n'
-                                      f'/help - справка по боту\n')
+    if message.chat.id == 1338281106:
+        bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
+                                          f'/price -  рассчет услуг для любого авто\n'
+                                          f'/start - инициализация бота\n'
+                                          f'/help - справка по боту\n'
+                                          f'/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
+                                          f'"старые клиенты"')
+    else:
+        bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
+                                          f'/price -  рассчет услуг для любого авто\n'
+                                          f'/start - инициализация бота\n'
+                                          f'/help - справка по боту\n')
 
 
 @bot.message_handler(commands=['price'])
 def price(message):
     marks_buttons(bot, message)
+
+
+@bot.message_handler(commands=['next_level_base'])
+def next_level_base(message):
+    if message.chat.id == 1338281106:
+        sent = bot.send_message('1338281106', 'Введи никнейм клиента без знака @, которого нужно переместить '
+                                              'в базу данных "старые клиенты"')
+        bot.register_next_step_handler(sent, perehvat)
+
+    else:
+        bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
 
 
 @bot.message_handler(func=lambda m: m.text)
@@ -215,9 +234,19 @@ def redkoe_auto(message):
                                    f'Хозяин, поступил запрос прайса на отсутствующее в моем списке авто от:\n'
                                    f'Имя: {message.from_user.first_name}\n'
                                    f'Фамилия: {message.from_user.last_name}\n'
-                                   f'Псевдоним: @{message.from_user.username}\n'
+                                   f'Никнейм: {message.from_user.username}\n'
+                                   f'Ссылка: @{message.from_user.username}\n'
                                    f'Авто: {auto_model}\n'
-                                   f'Быстрее отправь прайс на его корыто пока он не слился')
+                                   f'Быстрее отправь прайс на его корыто пока он не слился\n'
+                                   f'В случае положительной отработки заявки не забудь перевести клиента из базы '
+                                   f'"потенциальные клиенты" в базу "старые клиенты" с помощью команды\n '
+                                   f'/next_level_base')
+    clients_base(bot, message, auto_model).chec_and_record()
 
 
-bot.infinity_polling()
+def perehvat(message):
+    clients_base(bot, message, auto_model, message.text).perevod_v_bazu()
+
+
+bot.polling()
+#bot.infinity_polling()
