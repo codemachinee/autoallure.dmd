@@ -137,6 +137,14 @@ class model_buttons:
         self.bot.send_message(self.message.chat.id, 'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?',
                               reply_markup=kb4)
 
+    def rasylka_buttons(self):
+        kb5 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+        but1 = types.KeyboardButton(text='Общая база клиентов')
+        but2 = types.KeyboardButton(text='База потенциальных клиентов')
+        but3 = types.KeyboardButton(text='База старых клиентов')
+        kb5.add(but1, but2, but3)
+        self.bot.send_message(self.message.chat.id, '...', reply_markup=kb5)
+
 
 def zayavka_done(bot, message):
     kb2 = types.ReplyKeyboardRemove()
@@ -192,8 +200,27 @@ class clients_base:
         self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])
         self.bot.send_message('1338281106', 'Птичка в клетке ✅')
 
+    def rasylka_v_bazu(self):
+        if self.perehvat == 'Общая база клиентов':
+            self.bot.send_message('1338281106', ' рассылка в общую базу')
+            print(self.message)
+        if self.perehvat == 'База потенциальных клиентов':
+            self.bot.send_message('1338281106', ' рассылка в базу новичков')
+            print(self.message)
+        if self.perehvat == 'База старых клиентов':
+            self.bot.send_message('1338281106', ' рассылка в базу старых')
+            print(self.message)
 
 
+class rasylka_message:
+    def __init__(self, post):
+        self.post = post
+
+    def _get_message_(self):
+        return self.post
+
+    def _set_message_(self, value):
+        self.post = value
 
 
 

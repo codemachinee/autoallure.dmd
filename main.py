@@ -1,11 +1,12 @@
 import telebot
 from telebot import types
-from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base
+from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message
 
 token = '5380562272:AAFqodiUpENCtx7oD8f5xnbIDNOoxJW6YMY'
 bot = telebot.TeleBot(token)
 
 auto_model = None
+rasylka = None
 
 
 @bot.message_handler(commands=['start'])
@@ -48,8 +49,17 @@ def next_level_base(message):
     if message.chat.id == 1338281106:
         sent = bot.send_message('1338281106', 'Введи никнейм клиента без знака @, которого нужно переместить '
                                               'в базу данных "старые клиенты"')
-        bot.register_next_step_handler(sent, perehvat)
+        bot.register_next_step_handler(sent, post_perehvat_1)
 
+    else:
+        bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
+
+
+@bot.message_handler(commands=['post'])
+def post(message):
+    if message.chat.id == 1338281106:
+        sent = bot.send_message('1338281106', 'Введи текст поста и отправь мне..')
+        bot.register_next_step_handler(sent, post_perehvat_1)
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
 
@@ -244,8 +254,20 @@ def redkoe_auto(message):
     clients_base(bot, message, auto_model).chec_and_record()
 
 
-def perehvat(message):
+def base_perehvat(message):
     clients_base(bot, message, auto_model, message.text).perevod_v_bazu()
+
+
+def post_perehvat_1(message):
+    global rasylka
+    rasylka = rasylka_message(message.text)
+    model_buttons(bot, message).rasylka_buttons()
+    sent = bot.send_message('1338281106', 'Выберите базу для рассылки')
+    bot.register_next_step_handler(sent, post_perehvat_2)
+
+
+def post_perehvat_2(message):
+    clients_base(bot, rasylka.post, auto_model, message.text).rasylka_v_bazu()
 
 
 bot.polling()
