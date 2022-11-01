@@ -8,7 +8,7 @@ from datetime import datetime
 from random import *
 
 
-def marks_buttons(bot, message):
+def marks_buttons(bot, message):  # функция определяющая клавиатуру с марками авто
     kb1 = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
     but1 = types.KeyboardButton(text='AUDI')
     but2 = types.KeyboardButton(text='BMW')
@@ -194,11 +194,15 @@ class clients_base:
                                     self.auto_model, str(datetime.now().date())]])
 
     def perevod_v_bazu(self):
-        worksheet_len3 = len(self.worksheet3.col_values(2)) + 1
-        cell = self.worksheet.find(self.perehvat)
-        self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet.row_values(cell.row)])
-        self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])
-        self.bot.send_message('1338281106', 'Птичка в клетке ✅')
+        try:
+            worksheet_len3 = len(self.worksheet3.col_values(2)) + 1
+            cell = self.worksheet.find(self.perehvat)
+            self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet.row_values(cell.row)])
+            self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])
+            self.bot.send_message('1338281106', 'Птичка в клетке ✅')
+        except AttributeError:
+            self.bot.send_message('1338281106', 'Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
+                                                'косяк воспользуйся командой /next_level_base снова')
 
     def rasylka_v_bazu(self):
         if self.perehvat == 'Общая база клиентов':
@@ -219,8 +223,6 @@ class rasylka_message:
     def _get_message_(self):
         return self.post
 
-    def _set_message_(self, value):
-        self.post = value
 
 
 

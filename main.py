@@ -1,19 +1,21 @@
+# библиотека телеграм-бота
 import telebot
+# с помощью типов можно создавать клавиатуры
 from telebot import types
+# импорт из файла functions
 from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message
 
 token = '5380562272:AAFqodiUpENCtx7oD8f5xnbIDNOoxJW6YMY'
 bot = telebot.TeleBot(token)
+auto_model = None   # переменная для записи модели авто клиента
+rasylka = None   # переменная для переопределения класса в который записывается и хранится сообщение рассылки
 
-auto_model = None
-rasylka = None
 
-
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start'])    # перехватчик команды /start
 def start(message):
-    kb2 = types.ReplyKeyboardRemove()
+    kb2 = types.ReplyKeyboardRemove()    # удаление клавиатуры
     bot.send_message(message.chat.id, '...', reply_markup=kb2)
-    file_open = open("start_logo.png", 'rb')
+    file_open = open("start_logo.png", 'rb')    # открытие и чтение файла стартовой картинки
     bot.send_photo(message.chat.id, file_open, '''Здравствуйте!
 Вас приветствует autoallure.dmd_bot - надежный сервис и помощник по уходу за Вашим автомобилем .﻿🚘
 
@@ -25,11 +27,12 @@ def start(message):
 def help(message):
     kb2 = types.ReplyKeyboardRemove()
     bot.send_message(message.chat.id, '...', reply_markup=kb2)
-    if message.chat.id == 1338281106:
+    if message.chat.id == 1338281106:      # условия демонстрации различных команд для админа и клиентов
         bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
                                           f'/price -  рассчет услуг для любого авто\n'
                                           f'/start - инициализация бота\n'
                                           f'/help - справка по боту\n'
+                                          f'/post - устроить рассылку'
                                           f'/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
                                           f'"старые клиенты"')
     else:
@@ -41,16 +44,16 @@ def help(message):
 
 @bot.message_handler(commands=['price'])
 def price(message):
-    marks_buttons(bot, message)
+    marks_buttons(bot, message)    # класс по формированию различных клавиатур, располагается в functions
 
 
-@bot.message_handler(commands=['next_level_base'])
-def next_level_base(message):
+@bot.message_handler(commands=['next_level_base'])  # команда для переброски клиента из базы потенциальных клиентов в
+def next_level_base(message):                                                        # базу старых клиентов
     if message.chat.id == 1338281106:
         sent = bot.send_message('1338281106', 'Введи никнейм клиента без знака @, которого нужно переместить '
                                               'в базу данных "старые клиенты"')
-        bot.register_next_step_handler(sent, post_perehvat_1)
-
+        bot.register_next_step_handler(sent, base_perehvat)   # перехватывает ответ пользователя на сообщение "sent" и
+                                                              # и направляет его аргументом в функцию base_perehvat
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
 
@@ -64,7 +67,7 @@ def post(message):
         bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
 
 
-@bot.message_handler(func=lambda m: m.text)
+@bot.message_handler(func=lambda m: m.text)  # перехватчик текстовых сообщений
 def chek_message_auto(m):
     global auto_model
     if m.text == '🔙Вернуться в начало':
@@ -73,7 +76,7 @@ def chek_message_auto(m):
         sent = bot.send_message(m.chat.id, 'Пожалуйста, введите марку и модель авто с помощью клавиатуры...')
         bot.register_next_step_handler(sent, redkoe_auto)
     if m.text == 'Да, хочу!':
-        zayavka_done(bot=bot, message=m)
+        zayavka_done(bot=bot, message=m)  # функция оформления заявки. Отправляет админу специальное сообщение о заявке
     if m.text == 'AUDI':
         auto_model = 'AUDI'
         model_buttons(bot=bot, message=m, but1='A1, A2, A3, TT, A4, A5', but2='A6, A7, RS6, Q3, Q5, A8, R8',
@@ -232,12 +235,12 @@ def chek_message_auto(m):
         model_buttons(bot=bot, message=m, but1='Polo, Scriocco, Beetle, Jetta, Golf',
                       but2='Passat, Arteon, Touran, Sharan, Golf plus, Tiguan', but3='Phaeton, Touareg',
                       but4='🚫Отсутствует в списке', but5='🔙Вернуться в начало').model_buttons()
-    search_models(bot, m, m.text, auto_model=auto_model)
+    search_models(bot, m, m.text, auto_model=auto_model)  # класс опредляющий пригадлежность авто ценовым классам
 
 
-def redkoe_auto(message):
+def redkoe_auto(message):  # функция регистрации заявки авто, которое отсутствует в каталоге бота
     global auto_model
-    auto_model = message.text
+    auto_model = message.text   # модели присваивается название введенное клиентов в сообщении
     bot.send_message(message.chat.id, 'Cпасибо! Я передал информацию мастеру. Прайс будет выслан Вам в ближайшее '
                                       'время.')
     bot.send_message('1338281106', f'🚨!!!СРОЧНО!!!🚨\n'
@@ -251,22 +254,23 @@ def redkoe_auto(message):
                                    f'В случае положительной отработки заявки не забудь перевести клиента из базы '
                                    f'"потенциальные клиенты" в базу "старые клиенты" с помощью команды\n '
                                    f'/next_level_base')
-    clients_base(bot, message, auto_model).chec_and_record()
+    clients_base(bot, message, auto_model).chec_and_record()  # класс проверки клиента в базе и его запись в базу
+                                                              # в случае отсутствия
 
 
-def base_perehvat(message):
+def base_perehvat(message):  # перехватчик текстовых сообщения с именем клиента для поиска его в базе
     clients_base(bot, message, auto_model, message.text).perevod_v_bazu()
 
 
-def post_perehvat_1(message):
+def post_perehvat_1(message):  # перехватчик текста поста для рассылки
     global rasylka
     rasylka = rasylka_message(message.text)
-    model_buttons(bot, message).rasylka_buttons()
+    model_buttons(bot, message).rasylka_buttons()  # вызов кнопок выбора базы для рассылки
     sent = bot.send_message('1338281106', 'Выберите базу для рассылки')
     bot.register_next_step_handler(sent, post_perehvat_2)
 
 
-def post_perehvat_2(message):
+def post_perehvat_2(message):   # перехватчик сообщения с базой для рассылки
     clients_base(bot, rasylka.post, auto_model, message.text).rasylka_v_bazu()
 
 
