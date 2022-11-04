@@ -34,12 +34,14 @@ def help(message):
                                           f'/help - справка по боту\n'
                                           f'/post - устроить рассылку'
                                           f'/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
-                                          f'"старые клиенты"')
+                                          f'"старые клиенты"\n'
+                                          f'/result - посмотреть на отзывы и галерею с результатом работ')
     else:
         bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
                                           f'/price -  рассчет услуг для любого авто\n'
                                           f'/start - инициализация бота\n'
-                                          f'/help - справка по боту\n')
+                                          f'/help - справка по боту\n'
+                                          f'/result - посмотреть на отзывы и галерею с результатом работ')
 
 
 @bot.message_handler(commands=['price'])
@@ -65,6 +67,13 @@ def post(message):
         bot.register_next_step_handler(sent, post_perehvat_1)
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
+
+
+@bot.message_handler(commands=['result'])
+def result(message):
+    bot.send_message(message.chat.id, 'перейдите по ссылке: https://drive.google.com/drive/folders/1ZoR3prmxJtCmeW8Ik-'
+                                      'rDB0S4FxpzaWPc')
+
 
 
 @bot.message_handler(func=lambda m: m.text)  # перехватчик текстовых сообщений
@@ -264,7 +273,7 @@ def base_perehvat(message):  # перехватчик текстовых соо�
 
 def post_perehvat_1(message):  # перехватчик текста поста для рассылки
     global rasylka
-    rasylka = rasylka_message(message.text)
+    rasylka = rasylka_message(message.id)
     model_buttons(bot, message).rasylka_buttons()  # вызов кнопок выбора базы для рассылки
     sent = bot.send_message('1338281106', 'Выберите базу для рассылки')
     bot.register_next_step_handler(sent, post_perehvat_2)
@@ -274,5 +283,5 @@ def post_perehvat_2(message):   # перехватчик сообщения с �
     clients_base(bot, rasylka.post, auto_model, message.text).rasylka_v_bazu()
 
 
-bot.polling()
-#bot.infinity_polling()
+#bot.polling()
+bot.infinity_polling()

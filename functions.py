@@ -1,7 +1,6 @@
 from telebot import types
 # библиотека работы с гугл таблицами
 import gspread
-import oauth2client
 # библиотека проверки даты
 from datetime import datetime
 # библиотека рандома
@@ -76,7 +75,9 @@ class search_models:
                     file_open = open("1 class_.png", 'rb')
                     bot.send_photo(message.chat.id, file_open, f'Готово!\n'
                                                                f'Стоимость услуг для Вашего автомобиля {auto_model}\n'
-                                                               'соответствует первому ценовому классу.')
+                                                               'соответствует первому ценовому классу.\n'
+                                                               f'/help - справка по боту \n'
+                                                               f'/result - посмотреть на отзывы и результат работ')
                     model_buttons(self.bot, self.message).zayavka_buttons()
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
@@ -84,13 +85,15 @@ class search_models:
                                                    f'Никнейм: {message.from_user.username}\n'
                                                    f'Ссылка: @{message.from_user.username}\n'
                                                    f'Авто: {auto_model} 1 класса')
-                    clients_base(self.bot, self.message, self.auto_model).chec_and_record()
+                    clients_base(self.bot, self.message, auto_model=self.auto_model + ' 1 класса').chec_and_record()
 
                 if text.find(i) >= 0 and klass == self.klass_second:
                     file_open = open("2 class.png", 'rb')
                     bot.send_photo(message.chat.id, file_open, f'Готово!\n'
                                                                f'Стоимость услуг для Вашего автомобиля {auto_model}\n'
-                                                               'соответствует второму ценовому классу.')
+                                                               'соответствует второму ценовому классу.\n'
+                                                               f'/help - справка по боту \n'
+                                                               f'/result - посмотреть на отзывы и результат работ')
                     model_buttons(self.bot, self.message).zayavka_buttons()
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
@@ -98,13 +101,15 @@ class search_models:
                                                    f'Никнейм: {message.from_user.username}\n'
                                                    f'Ссылка: @{message.from_user.username}\n'
                                                    f'Авто: {auto_model} 2 класса')
-                    clients_base(self.bot, self.message, self.auto_model).chec_and_record()
+                    clients_base(self.bot, self.message, auto_model=self.auto_model + ' 2 класса').chec_and_record()
 
                 if text.find(i) >= 0 and klass == self.klass_third:
                     file_open = open("3 class.png", 'rb')
                     bot.send_photo(message.chat.id, file_open, f'Готово!\n'
                                                                f'Стоимость услуг для Вашего автомобиля {auto_model}\n'
-                                                               'соответствует третьему ценовому классу.')
+                                                               f'соответствует третьему ценовому классу.\n'
+                                                               f'/help - справка по боту \n'
+                                                               f'/result - посмотреть на отзывы и результат работ')
                     model_buttons(self.bot, self.message).zayavka_buttons()
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
@@ -112,7 +117,7 @@ class search_models:
                                                    f'Никнейм: {message.from_user.username}\n'
                                                    f'Ссылка: @{message.from_user.username}\n'
                                                    f'Авто: {auto_model} 3 класса')
-                    clients_base(self.bot, self.message, self.auto_model).chec_and_record()
+                    clients_base(self.bot, self.message, auto_model=self.auto_model + ' 3 класса').chec_and_record()
 
 
 class model_buttons:
@@ -134,7 +139,9 @@ class model_buttons:
         but1 = types.KeyboardButton(text='Да, хочу!')
         but2 = types.KeyboardButton(text='🔙Вернуться в начало')
         kb4.add(but1, but2)
-        self.bot.send_message(self.message.chat.id, 'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?',
+        self.bot.send_message(self.message.chat.id, f'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?\n'
+                                                    f'/help - справка по боту \n'
+                                                    f'/result - посмотреть на отзывы и результат работ',
                               reply_markup=kb4)
 
     def rasylka_buttons(self):
@@ -206,14 +213,23 @@ class clients_base:
 
     def rasylka_v_bazu(self):
         if self.perehvat == 'Общая база клиентов':
-            self.bot.send_message('1338281106', ' рассылка в общую базу')
-            print(self.message)
+            kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
+            self.bot.send_message('1338281106', '...', reply_markup=kb5)
+            for i in range(1, len(self.worksheet.col_values(1))):
+                self.bot.copy_message(self.worksheet.col_values(1)[i], '1338281106', self.message)
+            self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
         if self.perehvat == 'База потенциальных клиентов':
-            self.bot.send_message('1338281106', ' рассылка в базу новичков')
-            print(self.message)
+            kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
+            self.bot.send_message('1338281106', '...', reply_markup=kb5)
+            for i in range(1, len(self.worksheet2.col_values(1))):
+                self.bot.copy_message(self.worksheet2.col_values(1)[i], '1338281106', self.message)
+            self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
         if self.perehvat == 'База старых клиентов':
-            self.bot.send_message('1338281106', ' рассылка в базу старых')
-            print(self.message)
+            kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
+            self.bot.send_message('1338281106', '...', reply_markup=kb5)
+            for i in range(1, len(self.worksheet3.col_values(1))):
+                self.bot.copy_message(self.worksheet3.col_values(1)[i], '1338281106', self.message)
+            self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
 
 
 class rasylka_message:
