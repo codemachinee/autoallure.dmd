@@ -50,7 +50,7 @@ def marks_buttons(bot, message):  # функция определяющая кл
     bot.send_message(message.chat.id, 'Пожалуйста выберите марку Вашего автомобиля', reply_markup=kb1)
 
 
-class search_models:
+class search_models: #класс определяющий принадлежность авто к классу
     klass_first = ['TT', 'X2', 'Bonus', 'ATS', 'Aveo', 'Spark', 'Neon', 'DS-4', 'Focus', 'Jazz', 'Atos', 'Q30', 'Rio', 'Granta',
                    'IS,', 'MX-5', 'SLK', 'Cooper', 'Colt', 'Tiida', 'Astra', '308', '911', 'Clio', 'Rapid', 'Legacy',
                    'Yaris', 'S40', 'Polo']
@@ -78,13 +78,14 @@ class search_models:
                                                                'соответствует первому ценовому классу.\n'
                                                                f'/help - справка по боту \n'
                                                                f'/result - посмотреть на отзывы и результат работ')
-                    model_buttons(self.bot, self.message).zayavka_buttons()
+                    model_buttons(self.bot, self.message).zayavka_buttons()  # вызов клавиш для оформления заявки
                     bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
                                                    f'Никнейм: {message.from_user.username}\n'
                                                    f'Ссылка: @{message.from_user.username}\n'
                                                    f'Авто: {auto_model} 1 класса')
+                    # передача классу клиентской базы данных для поиска клиента в базе и записи в случае отсутствия
                     clients_base(self.bot, self.message, auto_model=self.auto_model + ' 1 класса').chec_and_record()
 
                 if text.find(i) >= 0 and klass == self.klass_second:
@@ -120,7 +121,7 @@ class search_models:
                     clients_base(self.bot, self.message, auto_model=self.auto_model + ' 3 класса').chec_and_record()
 
 
-class model_buttons:
+class model_buttons: # класс формирования клавиатур
 
     def __init__(self, bot, message, **kwargs):
         self.bot = bot
@@ -168,21 +169,22 @@ def zayavka_done(bot, message):
                                    f'/next_level_base')
 
 
-class clients_base:
+class clients_base:  # класс базы данных
 
     def __init__(self, bot, message, auto_model, perehvat=None):
         self.bot = bot
         self.message = message
         self.auto_model = auto_model
         self.perehvat = perehvat
-        gc = gspread.service_account(filename='base_key.json')
+        gc = gspread.service_account(filename='base_key.json')  # доступ к гугл табл по ключевому файлу аккаунта разраба
+        # открытие таблицы по юрл адресу:
         sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit")
-        self.worksheet = sh.worksheet('общая база клиентов')
+        self.worksheet = sh.worksheet('общая база клиентов')  # выбор листа 'общая база клиентов' таблицы
         self.worksheet2 = sh.worksheet('потенциальные клиенты')
         self.worksheet3 = sh.worksheet('старые клиенты')
 
-    def chec_and_record(self):
-        worksheet_len = len(self.worksheet.col_values(2)) + 1
+    def chec_and_record(self):  # функция поиска и записи в базу
+        worksheet_len = len(self.worksheet.col_values(2)) + 1  # поиск первой свободной ячейки для записи во 2 столбце
         worksheet_len2 = len(self.worksheet2.col_values(2)) + 1
         self.bot.send_message('1338281106', 'Пробиваю базу..')
         self.bot.send_message('1338281106', '...')
@@ -200,18 +202,19 @@ class clients_base:
                                     self.message.from_user.first_name, self.message.from_user.last_name,
                                     self.auto_model, str(datetime.now().date())]])
 
-    def perevod_v_bazu(self):
+    def perevod_v_bazu(self):  # функция перевода из базы потенциальных клиентов в базу старых клиентов
         try:
             worksheet_len3 = len(self.worksheet3.col_values(2)) + 1
-            cell = self.worksheet.find(self.perehvat)
+            cell = self.worksheet.find(self.perehvat)  # поиск ячейки с данными по ключевому слову
+            # запись клиента в свободную строку базы старых клиентов:
             self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet.row_values(cell.row)])
-            self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])
+            self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"]) # удаление клиента из базы потенциальных
             self.bot.send_message('1338281106', 'Птичка в клетке ✅')
         except AttributeError:
             self.bot.send_message('1338281106', 'Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
                                                 'косяк воспользуйся командой /next_level_base снова')
 
-    def rasylka_v_bazu(self):
+    def rasylka_v_bazu(self):  # функция рассылки постов в базы
         if self.perehvat == 'Общая база клиентов':
             kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
             self.bot.send_message('1338281106', '...', reply_markup=kb5)
@@ -232,7 +235,7 @@ class clients_base:
             self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
 
 
-class rasylka_message:
+class rasylka_message:  # класс хранения сообщения для рассылки
     def __init__(self, post):
         self.post = post
 
