@@ -2,7 +2,7 @@ from telebot import types
 # библиотека работы с гугл таблицами
 import gspread
 # библиотека проверки даты
-from datetime import datetime
+from datetime import *
 # библиотека рандома
 from random import *
 
@@ -140,9 +140,7 @@ class model_buttons: # класс формирования клавиатур
         but1 = types.KeyboardButton(text='Да, хочу!')
         but2 = types.KeyboardButton(text='🔙Вернуться в начало')
         kb4.add(but1, but2)
-        self.bot.send_message(self.message.chat.id, f'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?\n'
-                                                    f'/help - справка по боту \n'
-                                                    f'/result - посмотреть на отзывы и результат работ',
+        self.bot.send_message(self.message.chat.id, f'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?\n',
                               reply_markup=kb4)
 
     def rasylka_buttons(self):
@@ -178,7 +176,7 @@ class clients_base:  # класс базы данных
         self.perehvat = perehvat
         gc = gspread.service_account(filename='base_key.json')  # доступ к гугл табл по ключевому файлу аккаунта разраба
         # открытие таблицы по юрл адресу:
-        sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit")
+        sh = gc.open('autoallure_dmd')
         self.worksheet = sh.worksheet('общая база клиентов')  # выбор листа 'общая база клиентов' таблицы
         self.worksheet2 = sh.worksheet('потенциальные клиенты')
         self.worksheet3 = sh.worksheet('старые клиенты')
@@ -208,30 +206,34 @@ class clients_base:  # класс базы данных
             cell = self.worksheet.find(self.perehvat)  # поиск ячейки с данными по ключевому слову
             # запись клиента в свободную строку базы старых клиентов:
             self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet.row_values(cell.row)])
-            self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"]) # удаление клиента из базы потенциальных
+            self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])  # удаление клиента из базы потенциальных
             self.bot.send_message('1338281106', 'Птичка в клетке ✅')
         except AttributeError:
             self.bot.send_message('1338281106', 'Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
                                                 'косяк воспользуйся командой /next_level_base снова')
 
     def rasylka_v_bazu(self):  # функция рассылки постов в базы
+        kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
+        kb6 = types.InlineKeyboardMarkup(row_width=1)
+        but1 = types.InlineKeyboardButton(text='Конечно!', callback_data='btn')
+        kb6.add(but1)
         if self.perehvat == 'Общая база клиентов':
-            kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
             self.bot.send_message('1338281106', '...', reply_markup=kb5)
             for i in range(1, len(self.worksheet.col_values(1))):
-                self.bot.copy_message(self.worksheet.col_values(1)[i], '1338281106', self.message)
+                self.bot.copy_message(self.worksheet.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
+                self.bot.send_message(self.worksheet.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
             self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
         if self.perehvat == 'База потенциальных клиентов':
-            kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
             self.bot.send_message('1338281106', '...', reply_markup=kb5)
             for i in range(1, len(self.worksheet2.col_values(1))):
-                self.bot.copy_message(self.worksheet2.col_values(1)[i], '1338281106', self.message)
+                self.bot.copy_message(self.worksheet2.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
+                self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
             self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
         if self.perehvat == 'База старых клиентов':
-            kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
             self.bot.send_message('1338281106', '...', reply_markup=kb5)
             for i in range(1, len(self.worksheet3.col_values(1))):
-                self.bot.copy_message(self.worksheet3.col_values(1)[i], '1338281106', self.message)
+                self.bot.copy_message(self.worksheet3.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
+                self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
             self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
 
 
@@ -242,6 +244,18 @@ class rasylka_message:  # класс хранения сообщения для 
     def _get_message_(self):
         return self.post
 
+
+#class auto_voronka:
+    #def __init__(self, bot, day, month):
+        #self.bot = bot
+        #self.day = day
+        #self.month = month
+        #gc = gspread.service_account(filename='base_key.json')  # доступ к гугл табл по ключевому файлу аккаунта разраба
+        # открытие таблицы по юрл адресу:
+        #sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit")
+        #self.worksheet2 = sh.worksheet('потенциальные клиенты')
+    #def voronka_potencialnye(self):
+        #for i in range(1, len(self.worksheet2.col_values(1)))
 
 
 

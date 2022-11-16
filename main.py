@@ -2,6 +2,8 @@
 import telebot
 # с помощью типов можно создавать клавиатуры
 from telebot import types
+# библиотека для выполнения фоновых процессов в определенное время
+from apscheduler.schedulers.background import BackgroundScheduler
 # импорт из файла functions
 from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message
 
@@ -32,7 +34,7 @@ def help(message):
                                           f'/price -  рассчет услуг для любого авто\n'
                                           f'/start - инициализация бота\n'
                                           f'/help - справка по боту\n'
-                                          f'/post - устроить рассылку'
+                                          f'/post - устроить рассылку\n'
                                           f'/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
                                           f'"старые клиенты"\n'
                                           f'/result - посмотреть на отзывы и галерею с результатом работ')
@@ -73,7 +75,6 @@ def post(message):
 def result(message):
     bot.send_message(message.chat.id, 'перейдите по ссылке: https://drive.google.com/drive/folders/1ZoR3prmxJtCmeW8Ik-'
                                       'rDB0S4FxpzaWPc')
-
 
 
 @bot.message_handler(func=lambda m: m.text)  # перехватчик текстовых сообщений
@@ -247,6 +248,19 @@ def chek_message_auto(m):
     search_models(bot, m, m.text, auto_model=auto_model)  # класс опредляющий пригадлежность авто ценовым классам
 
 
+@bot.callback_query_handler(func=lambda callback: callback.data)
+def check_callback(callback):
+    if callback.data == 'btn':
+        bot.send_message(callback.message.chat.id, 'Спасибо! С Вами свяжутся в ближайшее время для уточнения информации')
+        bot.send_message('1338281106', f'🚨!!!СРОЧНО!!!🚨\n'
+                                       f'Хозяин, поступил запрос на участие в акции от:\n'
+                                       f'Имя: {callback.from_user.first_name}\n'
+                                       f'Фамилия: {callback.from_user.last_name}\n'
+                                       f'Никнейм: {callback.from_user.username}\n'
+                                       f'Ссылка: @{callback.from_user.username}\n'
+                                       f'Быстрее уточни все необходимое и закрой заявку \n')
+
+
 def redkoe_auto(message):  # функция регистрации заявки авто, которое отсутствует в каталоге бота
     global auto_model
     auto_model = message.text   # модели присваивается название введенное клиентов в сообщении
@@ -281,6 +295,12 @@ def post_perehvat_1(message):  # перехватчик текста поста 
 
 def post_perehvat_2(message):   # перехватчик сообщения с базой для рассылки
     clients_base(bot, rasylka.post, auto_model, message.text).rasylka_v_bazu()
+
+
+#if __name__ == '__main__':
+    #scheduler = BackgroundScheduler()
+    #scheduler.add_job(auto_voronka, "cron", day_of_week='mon-sun', hour=13)
+    #scheduler.start()
 
 
 #bot.polling()
