@@ -220,21 +220,33 @@ class clients_base:  # класс базы данных
         if self.perehvat == 'Общая база клиентов':
             self.bot.send_message('1338281106', '...', reply_markup=kb5)
             for i in range(1, len(self.worksheet.col_values(1))):
-                self.bot.copy_message(self.worksheet.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
-                self.bot.send_message(self.worksheet.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                try:
+                    self.bot.copy_message(self.worksheet.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
+                    self.bot.send_message(self.worksheet.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                except Exception as ex:
+                    self.bot.send_message('1338281106', f'Босс, @{self.worksheet.col_values(2)[i]} заблочил меня \n'
+                                                        f'Похоже настало время набить ебало...')
             self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
         if self.perehvat == 'База потенциальных клиентов':
             self.bot.send_message('1338281106', '...', reply_markup=kb5)
-            for i in range(1, len(self.worksheet2.col_values(1))):
-                self.bot.copy_message(self.worksheet2.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
-                self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
-            self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
+            for i in range(1, len(self.worksheet.col_values(1))):
+                try:
+                    self.bot.copy_message(self.worksheet2.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
+                    self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                except Exception as ex:
+                    self.bot.send_message('1338281106', f'Босс, @{self.worksheet2.col_values(2)[i]} заблочил меня \n'
+                                                        f'Похоже настало время набить ебало...')
+            self.bot.send_message('1338281106', 'Босс, рассылка в базу потенциальных клиентов выполнена ✅')
         if self.perehvat == 'База старых клиентов':
             self.bot.send_message('1338281106', '...', reply_markup=kb5)
-            for i in range(1, len(self.worksheet3.col_values(1))):
-                self.bot.copy_message(self.worksheet3.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
-                self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
-            self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
+            for i in range(1, len(self.worksheet.col_values(1))):
+                try:
+                    self.bot.copy_message(self.worksheet3.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
+                    self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                except Exception as ex:
+                    self.bot.send_message('1338281106', f'Босс, @{self.worksheet3.col_values(2)[i]} заблочил меня \n'
+                                                        f'Похоже настало время набить ебало...')
+            self.bot.send_message('1338281106', 'Босс, рассылка в базу старых клиентов выполнена ✅')
 
 
 class rasylka_message:  # класс хранения сообщения для рассылки
