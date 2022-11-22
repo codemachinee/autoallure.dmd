@@ -79,7 +79,7 @@ class search_models: #класс определяющий принадлежно
                                                                f'/help - справка по боту \n'
                                                                f'/result - посмотреть на отзывы и результат работ')
                     model_buttons(self.bot, self.message).zayavka_buttons()  # вызов клавиш для оформления заявки
-                    bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
+                    bot.send_message('367683013', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
                                                    f'Никнейм: {message.from_user.username}\n'
@@ -96,7 +96,7 @@ class search_models: #класс определяющий принадлежно
                                                                f'/help - справка по боту \n'
                                                                f'/result - посмотреть на отзывы и результат работ')
                     model_buttons(self.bot, self.message).zayavka_buttons()
-                    bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
+                    bot.send_message('367683013', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
                                                    f'Никнейм: {message.from_user.username}\n'
@@ -112,7 +112,7 @@ class search_models: #класс определяющий принадлежно
                                                                f'/help - справка по боту \n'
                                                                f'/result - посмотреть на отзывы и результат работ')
                     model_buttons(self.bot, self.message).zayavka_buttons()
-                    bot.send_message('1338281106', f'Хозяин! Замечена активность:\n'
+                    bot.send_message('367683013', f'Хозяин! Замечена активность:\n'
                                                    f'Имя: {message.from_user.first_name}\n'
                                                    f'Фамилия: {message.from_user.last_name}\n'
                                                    f'Никнейм: {message.from_user.username}\n'
@@ -157,7 +157,7 @@ def zayavka_done(bot, message):
     bot.send_message(message.chat.id, f'Заявка оформлена и передана мастеру, с Вами свяжутся в ближайшее время. '
                                       'Спасибо, что выбрали нас.🤝\n'
                                       f'Для нового рассчета воспользуйтесь командой /price', reply_markup=kb2)
-    bot.send_message('1338281106', f'🚨!!!СРОЧНО!!!🚨\n'
+    bot.send_message('367683013', f'🚨!!!СРОЧНО!!!🚨\n'
                                    f'Хозяин, поступила ЗАЯВКА от:\n'
                                    f'Псевдоним: @{message.from_user.username}\n'
                                    f'Быстрее согласуй дату и закрой заявку пока он не слился'
@@ -184,12 +184,12 @@ class clients_base:  # класс базы данных
     def chec_and_record(self):  # функция поиска и записи в базу
         worksheet_len = len(self.worksheet.col_values(2)) + 1  # поиск первой свободной ячейки для записи во 2 столбце
         worksheet_len2 = len(self.worksheet2.col_values(2)) + 1
-        self.bot.send_message('1338281106', 'Пробиваю базу..')
-        self.bot.send_message('1338281106', '...')
+        self.bot.send_message('367683013', 'Пробиваю базу..')
+        self.bot.send_message('367683013', '...')
         if self.message.from_user.username in self.worksheet.col_values(2):
-            self.bot.send_message('1338281106', ' Клиент есть в базе')
+            self.bot.send_message('367683013', ' Клиент есть в базе')
         else:
-            self.bot.send_message('1338281106', f'Клиент добавлен в базу\n'
+            self.bot.send_message('367683013', f'Клиент добавлен в базу\n'
                     f'База: '
                     f'https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit#gid=0')
             self.worksheet.update(f'A{worksheet_len}:F{worksheet_len}', [[self.message.chat.id, self.message.from_user.username,
@@ -207,9 +207,9 @@ class clients_base:  # класс базы данных
             # запись клиента в свободную строку базы старых клиентов:
             self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet.row_values(cell.row)])
             self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])  # удаление клиента из базы потенциальных
-            self.bot.send_message('1338281106', 'Птичка в клетке ✅')
+            self.bot.send_message('367683013', 'Птичка в клетке ✅')
         except AttributeError:
-            self.bot.send_message('1338281106', 'Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
+            self.bot.send_message('367683013', 'Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
                                                 'косяк воспользуйся командой /next_level_base снова')
 
     def rasylka_v_bazu(self):  # функция рассылки постов в базы
@@ -218,35 +218,35 @@ class clients_base:  # класс базы данных
         but1 = types.InlineKeyboardButton(text='Конечно!', callback_data='btn')
         kb6.add(but1)
         if self.perehvat == 'Общая база клиентов':
-            self.bot.send_message('1338281106', '...', reply_markup=kb5)
+            self.bot.send_message('367683013', '...', reply_markup=kb5)
             for i in range(1, len(self.worksheet.col_values(1))):
                 try:
-                    self.bot.copy_message(self.worksheet.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
-                    self.bot.send_message(self.worksheet.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                    self.bot.copy_message(self.worksheet.col_values(1)[i], '367683013', self.message, reply_markup=kb5)
+                    #self.bot.send_message(self.worksheet.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
                 except Exception as ex:
-                    self.bot.send_message('1338281106', f'Босс, @{self.worksheet.col_values(2)[i]} заблочил меня \n'
+                    self.bot.send_message('367683013', f'Босс, @{self.worksheet.col_values(2)[i]} заблочил меня \n'
                                                         f'Похоже настало время набить ебало...')
-            self.bot.send_message('1338281106', 'Босс, рассылка в общую базу выполнена ✅')
+            self.bot.send_message('367683013', 'Босс, рассылка в общую базу выполнена ✅')
         if self.perehvat == 'База потенциальных клиентов':
-            self.bot.send_message('1338281106', '...', reply_markup=kb5)
+            self.bot.send_message('367683013', '...', reply_markup=kb5)
             for i in range(1, len(self.worksheet.col_values(1))):
                 try:
-                    self.bot.copy_message(self.worksheet2.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
-                    self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                    self.bot.copy_message(self.worksheet2.col_values(1)[i], '367683013', self.message, reply_markup=kb5)
+                    #self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
                 except Exception as ex:
-                    self.bot.send_message('1338281106', f'Босс, @{self.worksheet2.col_values(2)[i]} заблочил меня \n'
-                                                        f'Похоже настало время набить ебало...')
-            self.bot.send_message('1338281106', 'Босс, рассылка в базу потенциальных клиентов выполнена ✅')
+                    self.bot.send_message('367683013', f'Босс, @{self.worksheet2.col_values(2)[i]} заблочил меня \n'
+                                                       f'Похоже настало время набить ебало...')
+            self.bot.send_message('367683013', 'Босс, рассылка в базу потенциальных клиентов выполнена ✅')
         if self.perehvat == 'База старых клиентов':
-            self.bot.send_message('1338281106', '...', reply_markup=kb5)
+            self.bot.send_message('367683013', '...', reply_markup=kb5)
             for i in range(1, len(self.worksheet.col_values(1))):
                 try:
-                    self.bot.copy_message(self.worksheet3.col_values(1)[i], '1338281106', self.message, reply_markup=kb5)
-                    self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                    self.bot.copy_message(self.worksheet3.col_values(1)[i], '367683013', self.message, reply_markup=kb5)
+                    #self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
                 except Exception as ex:
-                    self.bot.send_message('1338281106', f'Босс, @{self.worksheet3.col_values(2)[i]} заблочил меня \n'
+                    self.bot.send_message('367683013', f'Босс, @{self.worksheet3.col_values(2)[i]} заблочил меня \n'
                                                         f'Похоже настало время набить ебало...')
-            self.bot.send_message('1338281106', 'Босс, рассылка в базу старых клиентов выполнена ✅')
+            self.bot.send_message('367683013', 'Босс, рассылка в базу старых клиентов выполнена ✅')
 
 
 class rasylka_message:  # класс хранения сообщения для рассылки

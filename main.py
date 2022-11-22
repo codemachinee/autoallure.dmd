@@ -7,7 +7,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 # импорт из файла functions
 from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message
 
-token = '5380562272:AAFqodiUpENCtx7oD8f5xnbIDNOoxJW6YMY'
+token = '1478162901:AAH6hKsBTTxVg8mEuR0sgTwpiqjf4hbA5WY'
 bot = telebot.TeleBot(token)
 auto_model = None   # переменная для записи модели авто клиента
 rasylka = None   # переменная для переопределения класса в который записывается и хранится сообщение рассылки
@@ -29,7 +29,7 @@ def start(message):
 def help(message):
     kb2 = types.ReplyKeyboardRemove()
     bot.send_message(message.chat.id, '...', reply_markup=kb2)
-    if message.chat.id == 1338281106:      # условия демонстрации различных команд для админа и клиентов
+    if message.chat.id == 367683013:      # условия демонстрации различных команд для админа и клиентов
         bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
                                           f'/price -  рассчет услуг для любого авто\n'
                                           f'/start - инициализация бота\n'
@@ -53,8 +53,8 @@ def price(message):
 
 @bot.message_handler(commands=['next_level_base'])  # команда для переброски клиента из базы потенциальных клиентов в
 def next_level_base(message):                                                        # базу старых клиентов
-    if message.chat.id == 1338281106:
-        sent = bot.send_message('1338281106', 'Введи никнейм клиента без знака @, которого нужно переместить '
+    if message.chat.id == 367683013:
+        sent = bot.send_message('367683013', 'Введи никнейм клиента без знака @, которого нужно переместить '
                                               'в базу данных "старые клиенты"')
         bot.register_next_step_handler(sent, base_perehvat)   # перехватывает ответ пользователя на сообщение "sent" и
                                                               # и направляет его аргументом в функцию base_perehvat
@@ -64,8 +64,8 @@ def next_level_base(message):                                                   
 
 @bot.message_handler(commands=['post'])
 def post(message):
-    if message.chat.id == 1338281106:
-        sent = bot.send_message('1338281106', 'Введи текст поста и отправь мне..')
+    if message.chat.id == 367683013:
+        sent = bot.send_message('367683013', 'Введи текст поста и отправь мне..')
         bot.register_next_step_handler(sent, post_perehvat_1)
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
@@ -252,7 +252,7 @@ def chek_message_auto(m):
 def check_callback(callback):
     if callback.data == 'btn':
         bot.send_message(callback.message.chat.id, 'Спасибо! С Вами свяжутся в ближайшее время для уточнения информации')
-        bot.send_message('1338281106', f'🚨!!!СРОЧНО!!!🚨\n'
+        bot.send_message('367683013', f'🚨!!!СРОЧНО!!!🚨\n'
                                        f'Хозяин, поступил запрос на участие в акции от:\n'
                                        f'Имя: {callback.from_user.first_name}\n'
                                        f'Фамилия: {callback.from_user.last_name}\n'
@@ -266,7 +266,7 @@ def redkoe_auto(message):  # функция регистрации заявки 
     auto_model = message.text   # модели присваивается название введенное клиентов в сообщении
     bot.send_message(message.chat.id, 'Cпасибо! Я передал информацию мастеру. Прайс будет выслан Вам в ближайшее '
                                       'время.')
-    bot.send_message('1338281106', f'🚨!!!СРОЧНО!!!🚨\n'
+    bot.send_message('367683013', f'🚨!!!СРОЧНО!!!🚨\n'
                                    f'Хозяин, поступил запрос прайса на отсутствующее в моем списке авто от:\n'
                                    f'Имя: {message.from_user.first_name}\n'
                                    f'Фамилия: {message.from_user.last_name}\n'
@@ -289,7 +289,7 @@ def post_perehvat_1(message):  # перехватчик текста поста 
     global rasylka
     rasylka = rasylka_message(message.id)
     model_buttons(bot, message).rasylka_buttons()  # вызов кнопок выбора базы для рассылки
-    sent = bot.send_message('1338281106', 'Выберите базу для рассылки')
+    sent = bot.send_message('367683013', 'Выберите базу для рассылки')
     bot.register_next_step_handler(sent, post_perehvat_2)
 
 
