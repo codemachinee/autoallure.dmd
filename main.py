@@ -5,10 +5,13 @@ from telebot import types
 # библиотека для выполнения фоновых процессов в определенное время
 from apscheduler.schedulers.background import BackgroundScheduler
 # импорт из файла functions
-from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message
+from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message, admin_account
 
+#token = '5380562272:AAFqodiUpENCtx7oD8f5xnbIDNOoxJW6YMY'
 token = '1478162901:AAH6hKsBTTxVg8mEuR0sgTwpiqjf4hbA5WY'
 bot = telebot.TeleBot(token)
+
+
 auto_model = None   # переменная для записи модели авто клиента
 rasylka = None   # переменная для переопределения класса в который записывается и хранится сообщение рассылки
 
@@ -29,7 +32,7 @@ def start(message):
 def help(message):
     kb2 = types.ReplyKeyboardRemove()
     bot.send_message(message.chat.id, '...', reply_markup=kb2)
-    if message.chat.id == 367683013:      # условия демонстрации различных команд для админа и клиентов
+    if message.chat.id == admin_account:      # условия демонстрации различных команд для админа и клиентов
         bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
                                           f'/price -  рассчет услуг для любого авто\n'
                                           f'/start - инициализация бота\n'
@@ -54,8 +57,8 @@ def price(message):
 
 @bot.message_handler(commands=['next_level_base'])  # команда для переброски клиента из базы потенциальных клиентов в
 def next_level_base(message):                                                        # базу старых клиентов
-    if message.chat.id == 367683013:
-        sent = bot.send_message('367683013', 'Введи никнейм клиента без знака @, которого нужно переместить '
+    if message.chat.id == admin_account:
+        sent = bot.send_message(admin_account, 'Введи никнейм клиента без знака @, которого нужно переместить '
                                               'в базу данных "старые клиенты"')
         bot.register_next_step_handler(sent, base_perehvat)   # перехватывает ответ пользователя на сообщение "sent" и
                                                               # и направляет его аргументом в функцию base_perehvat
@@ -65,8 +68,8 @@ def next_level_base(message):                                                   
 
 @bot.message_handler(commands=['sent_message'])  # команда для переброски клиента из базы потенциальных клиентов в
 def sent_message(message):    # базу старых клиентов
-    if message.chat.id == 367683013:
-        sent = bot.send_message('367683013', 'Введи id чата клиента, которому нужно написать от лица бота')
+    if message.chat.id == admin_account:
+        sent = bot.send_message(admin_account, 'Введи id чата клиента, которому нужно написать от лица бота')
         bot.register_next_step_handler(sent, sent_message_perehvat_1)   # перехватывает ответ пользователя на сообщение "sent" и
                                                               # и направляет его аргументом в функцию base_perehvat
     else:
@@ -75,8 +78,8 @@ def sent_message(message):    # базу старых клиентов
 
 @bot.message_handler(commands=['post'])
 def post(message):
-    if message.chat.id == 367683013:
-        sent = bot.send_message('367683013', 'Введи текст поста и отправь мне..')
+    if message.chat.id == admin_account:
+        sent = bot.send_message(admin_account, 'Введи текст поста и отправь мне..')
         bot.register_next_step_handler(sent, post_perehvat_1)
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
@@ -90,6 +93,7 @@ def result(message):
 
 @bot.message_handler(func=lambda m: m.text)  # перехватчик текстовых сообщений
 def chek_message_auto(m):
+    kb2 = types.ReplyKeyboardRemove()
     global auto_model
     if m.text == '🔙Вернуться в начало':
         marks_buttons(bot, m)
@@ -97,7 +101,9 @@ def chek_message_auto(m):
         sent = bot.send_message(m.chat.id, 'Пожалуйста, введите марку и модель авто с помощью клавиатуры...')
         bot.register_next_step_handler(sent, redkoe_auto)
     if m.text == 'Да, хочу!':
-        zayavka_done(bot=bot, message=m)  # функция оформления заявки. Отправляет админу специальное сообщение о заявке
+        zayavka_done(bot=bot, message=m) # функция оформления заявки. Отправляет админу специальное сообщение о заявке
+        sent = bot.send_message(m.chat.id, '..', reply_markup=kb2)
+        bot.register_next_step_handler(sent, sent_number)
     if m.text == 'AUDI':
         auto_model = 'AUDI'
         model_buttons(bot=bot, message=m, but1='A1, A2, A3, TT, A4, A5', but2='A6, A7, RS6, Q3, Q5, A8, R8',
@@ -263,11 +269,12 @@ def chek_message_auto(m):
 def check_callback(callback):
     if callback.data == 'btn':
         bot.send_message(callback.message.chat.id, 'Спасибо! С Вами свяжутся в ближайшее время для уточнения информации')
-        bot.send_message('367683013', f'🚨!!!СРОЧНО!!!🚨\n'
+        bot.send_message(admin_account, f'🚨!!!СРОЧНО!!!🚨\n'
                                        f'Хозяин, поступил запрос на участие в акции от:\n'
                                        f'Имя: {callback.from_user.first_name}\n'
                                        f'Фамилия: {callback.from_user.last_name}\n'
                                        f'Никнейм: {callback.from_user.username}\n'
+                                       f'id чата: {callback.chat.id}\n'
                                        f'Ссылка: @{callback.from_user.username}\n'
                                        f'Быстрее уточни все необходимое и закрой заявку \n')
 
@@ -277,11 +284,12 @@ def redkoe_auto(message):  # функция регистрации заявки 
     auto_model = message.text   # модели присваивается название введенное клиентов в сообщении
     bot.send_message(message.chat.id, 'Cпасибо! Я передал информацию мастеру. Прайс будет выслан Вам в ближайшее '
                                       'время.')
-    bot.send_message('367683013', f'🚨!!!СРОЧНО!!!🚨\n'
+    bot.send_message(admin_account, f'🚨!!!СРОЧНО!!!🚨\n'
                                    f'Хозяин, поступил запрос прайса на отсутствующее в моем списке авто от:\n'
                                    f'Имя: {message.from_user.first_name}\n'
                                    f'Фамилия: {message.from_user.last_name}\n'
                                    f'Никнейм: {message.from_user.username}\n'
+                                   f'id чата: {message.chat.id}\n'
                                    f'Ссылка: @{message.from_user.username}\n'
                                    f'Авто: {auto_model}\n'
                                    f'Быстрее отправь прайс на его корыто пока он не слился\n'
@@ -300,7 +308,7 @@ def post_perehvat_1(message):  # перехватчик текста поста 
     global rasylka
     rasylka = rasylka_message(message.id)  # хз почему message.id а не message.text но bot.copy_message() работает только так
     model_buttons(bot, message).rasylka_buttons()  # вызов кнопок выбора базы для рассылки
-    sent = bot.send_message('367683013', 'Выберите базу для рассылки')
+    sent = bot.send_message(admin_account, 'Выберите базу для рассылки')
     bot.register_next_step_handler(sent, post_perehvat_2)
 
 
@@ -312,17 +320,23 @@ def sent_message_perehvat_1(message):
     try:
         global rasylka
         rasylka = rasylka_message(message.text)
-        sent = bot.send_message('367683013', 'Введите текст сообщения')
+        sent = bot.send_message(admin_account, 'Введите текст сообщения')
         bot.register_next_step_handler(sent, sent_message_perehvat_2)
     except ValueError:
-        bot.send_message('367683013', 'Неккоректное значение. Воспользуйтесь командой /sent_message еще раз')
+        bot.send_message(admin_account, 'Неккоректное значение. Воспользуйтесь командой /sent_message еще раз')
 
 
 def sent_message_perehvat_2(message):
     kb2 = types.ReplyKeyboardRemove()
     global rasylka
-    bot.copy_message(rasylka.post, '367683013', message.id, reply_markup=kb2)
-    bot.send_message('367683013', 'Птичка в клетке ✅')
+    bot.copy_message(rasylka.post, admin_account, message.id, reply_markup=kb2)
+    bot.send_message(admin_account, 'Птичка в клетке ✅')
+
+
+def sent_number(message):
+    bot.send_message(admin_account, 'Сообщение от клиента:')
+    bot.copy_message(admin_account, message.chat.id, message.id)
+    bot.send_message(message.chat.id, 'Сообщение доставлено ✅')
 
 
 
