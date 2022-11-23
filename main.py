@@ -37,6 +37,7 @@ def help(message):
                                           f'/post - устроить рассылку\n'
                                           f'/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
                                           f'"старые клиенты"\n'
+                                          f'/sent_message -  отправка через бота сообщения клиенту по id чата'
                                           f'/result - посмотреть на отзывы и галерею с результатом работ')
     else:
         bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
@@ -57,6 +58,16 @@ def next_level_base(message):                                                   
         sent = bot.send_message('367683013', 'Введи никнейм клиента без знака @, которого нужно переместить '
                                               'в базу данных "старые клиенты"')
         bot.register_next_step_handler(sent, base_perehvat)   # перехватывает ответ пользователя на сообщение "sent" и
+                                                              # и направляет его аргументом в функцию base_perehvat
+    else:
+        bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
+
+
+@bot.message_handler(commands=['sent_message'])  # команда для переброски клиента из базы потенциальных клиентов в
+def sent_message(message):    # базу старых клиентов
+    if message.chat.id == 367683013:
+        sent = bot.send_message('367683013', 'Введи id чата клиента, которому нужно написать от лица бота')
+        bot.register_next_step_handler(sent, sent_message_perehvat_1)   # перехватывает ответ пользователя на сообщение "sent" и
                                                               # и направляет его аргументом в функцию base_perehvat
     else:
         bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
@@ -287,7 +298,7 @@ def base_perehvat(message):  # перехватчик текстовых соо�
 
 def post_perehvat_1(message):  # перехватчик текста поста для рассылки
     global rasylka
-    rasylka = rasylka_message(message.id)
+    rasylka = rasylka_message(message.id)  # хз почему message.id а не message.text но bot.copy_message() работает только так
     model_buttons(bot, message).rasylka_buttons()  # вызов кнопок выбора базы для рассылки
     sent = bot.send_message('367683013', 'Выберите базу для рассылки')
     bot.register_next_step_handler(sent, post_perehvat_2)
@@ -295,6 +306,23 @@ def post_perehvat_1(message):  # перехватчик текста поста 
 
 def post_perehvat_2(message):   # перехватчик сообщения с базой для рассылки
     clients_base(bot, rasylka.post, auto_model, message.text).rasylka_v_bazu()
+
+
+def sent_message_perehvat_1(message):
+    try:
+        global rasylka
+        rasylka = rasylka_message(message.id)  # хз почему message.id а не message.text но bot.copy_message() работает только так
+        sent = bot.send_message('367683013', 'Введите текст сообщения')
+        bot.register_next_step_handler(sent, sent_message_perehvat_2)
+    except ValueError:
+        bot.send_message('367683013', 'Неккоректное значение. Воспользуйтесь командой /sent_message еще раз')
+
+
+def sent_message_perehvat_2(message):
+    kb2 = types.ReplyKeyboardRemove()
+    global rasylka
+    bot.copy_message(rasylka.post, '367683013', message.text, reply_markup=kb2)
+
 
 
 #if __name__ == '__main__':
