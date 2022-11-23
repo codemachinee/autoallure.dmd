@@ -311,7 +311,7 @@ def post_perehvat_2(message):   # перехватчик сообщения с �
 def sent_message_perehvat_1(message):
     try:
         global rasylka
-        rasylka = rasylka_message(message.id)  # хз почему message.id а не message.text но bot.copy_message() работает только так
+        rasylka = rasylka_message(message.text)
         sent = bot.send_message('367683013', 'Введите текст сообщения')
         bot.register_next_step_handler(sent, sent_message_perehvat_2)
     except ValueError:
@@ -321,7 +321,8 @@ def sent_message_perehvat_1(message):
 def sent_message_perehvat_2(message):
     kb2 = types.ReplyKeyboardRemove()
     global rasylka
-    bot.copy_message(rasylka.post, '367683013', message.text, reply_markup=kb2)
+    bot.copy_message(rasylka.post, '367683013', message.id, reply_markup=kb2)
+    bot.send_message('367683013', 'Птичка в клетке ✅')
 
 
 
