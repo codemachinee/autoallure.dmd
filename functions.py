@@ -5,9 +5,9 @@ import gspread
 from datetime import *
 # библиотека рандома
 from random import *
+from passwords import *
 
-admin_account = 367683013 # Костин
-#admin_account = 127154290 # Мой
+admin_account = igor
 
 
 def marks_buttons(bot, message):  # функция определяющая клавиатуру с марками авто
@@ -259,7 +259,7 @@ class clients_base:  # класс базы данных
             self.bot.send_message(admin_account, 'Босс, рассылка в базу потенциальных клиентов выполнена ✅')
         if self.perehvat == 'База старых клиентов':
             self.bot.send_message(admin_account, '...', reply_markup=kb5)
-            for i in range(1, len(self.worksheet.col_values(1))):
+            for i in range(0, len(self.worksheet.col_values(1))):
                 try:
                     self.bot.copy_message(self.worksheet3.col_values(1)[i], admin_account, self.message, reply_markup=kb5)
                     #self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)

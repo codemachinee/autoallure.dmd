@@ -6,10 +6,9 @@ from telebot import types
 from apscheduler.schedulers.background import BackgroundScheduler
 # импорт из файла functions
 from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message, admin_account
+from passwords import *
 
-#token = '5380562272:AAFqodiUpENCtx7oD8f5xnbIDNOoxJW6YMY'
-token = '1478162901:AAH6hKsBTTxVg8mEuR0sgTwpiqjf4hbA5WY'
-bot = telebot.TeleBot(token)
+bot = telebot.TeleBot(lemonade)
 
 
 auto_model = None   # переменная для записи модели авто клиента
