@@ -4,8 +4,9 @@ from telebot import types
 # импорт из файла functions
 from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message
 
-token = '5380562272:AAFqodiUpENCtx7oD8f5xnbIDNOoxJW6YMY'
-bot = telebot.TeleBot(token)
+from passwords import *
+
+bot = telebot.TeleBot(lemonade)
 
 rasylka = None
 
