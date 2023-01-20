@@ -213,8 +213,8 @@ def chek_message_auto(m):
                       but5='🔙Вернуться в начало').model_buttons()
     if m.text == 'NISSAN':
         auto_model = 'NISSAN'
-        model_buttons(bot=bot, message=m, but1='Almera, Note, Tiida, Maxima, Micra', but2='Juke, Qashqai, 350Z, GT-R',
-                      but3='Murano, Teana, X-Trail, Pathfinder, Patrol', but4='🚫Отсутствует в списке',
+        model_buttons(bot=bot, message=m, but1='Almera, Note, Tiida, Maxima, Micra', but2='Juke, Qashqai, 350Z, Teana, GT-R',
+                      but3='Murano, X-Trail, Pathfinder, Patrol', but4='🚫Отсутствует в списке',
                       but5='🔙Вернуться в начало').model_buttons()
     if m.text == 'OPEL':
         auto_model = 'OPEL'
