@@ -9,10 +9,16 @@ from functions import marks_buttons, model_buttons, search_models, zayavka_done,
 from passwords import *
 
 bot = telebot.TeleBot(lemonade)
+# black_list = [365886107, 1338281106]
 
 
 auto_model = None   # переменная для записи модели авто клиента
 rasylka = None   # переменная для переопределения класса в который записывается и хранится сообщение рассылки
+
+
+@bot.message_handler(func=lambda message: message.chat.id == 365886107)
+def black_list(message):
+    bot.send_message(message.chat.id, 'Отказано в доступе\n\nПодробности у @pogonin21')
 
 
 @bot.message_handler(commands=['start'])    # перехватчик команды /start
