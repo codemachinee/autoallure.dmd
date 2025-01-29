@@ -8,7 +8,8 @@ from telebot import types
 from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message, admin_account
 from passwords import *
 
-bot = telebot.TeleBot(autoallure)
+bot = telebot.TeleBot(codemashine_test)
+# bot = telebot.TeleBot(autoallure)
 # bot = telebot.TeleBot(lemonade)
 # black_list = [365886107, 1338281106]
 
