@@ -1,50 +1,37 @@
+import asyncio
+
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from FSM import step_message
-from loguru import logger
+from aiogram.types import FSInputFile
 
 from passwords import*
-# Удаляем стандартный обработчик
-logger.remove()
-# Настраиваем логирование в файл с ограничением количества файлов
-logger.add(
-    "loggs.log",
-    format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}",
-    level="INFO",
-    rotation="5 MB",  # Ротация файла каждые 10 MB
-    retention="10 days",  # Хранить только 5 последних логов
-    compression="zip",  # Сжимать старые логи в архив
-    backtrace=True,     # Сохранение трассировки ошибок
-    diagnose=True       # Подробный вывод
-)
+from functions import*
+from handlers import*
+from loggs import*
 
 
-# token = lemonade
+# token = autoallure
 token = codemashine_test
 
 bot = Bot(token=token)
 dp = Dispatcher()
 
-db = Database()
+
+dp.message.register(start, Command(commands='start'))
+dp.message.register(help, Command(commands='help'))
+dp.message.register(price, Command(commands='price'))
+dp.message.register(result, Command(commands='result'))
+dp.callback_query.register(check_callbacks, F.data)
+dp.message.register(check_message, F.text)
 
 
-@dp.message(Command(commands='start'))
-async def start(message):
-    if message.chat.id in admins_list:
-        # await send_news()
-        await bot.send_message(message.chat.id, f'<b>Бот-поддержки продаж инициализирован.</b>\n'
-                               f'<b>Режим доступа</b>: Администратор\n'
-                               f'/help - справка по боту', message_thread_id=message.message_thread_id,
-                               parse_mode='html')
-    else:
-        data_from_database = await Database().search_in_table(message.chat.id)
-        if data_from_database is not False and data_from_database[0][4] >= 6:
-            pass
-        else:
-            await bot.send_message(message.chat.id, f'<b>Здравствуйте {message.from_user.first_name}!</b>\n\n'
-                                   f'<b>Бот-поддержки клиентов</b> инициализирован.\n'
-                                   f'/help - справка по боту', message_thread_id=message.message_thread_id,
-                                   parse_mode='html')
-            await bot.send_message(message.chat.id, f'Пожалуйста выберите интересующий товар:',
-                                   message_thread_id=message.message_thread_id, reply_markup=kb_choice_tovar)
+async def main():
+    await dp.start_polling(bot)
+
+if __name__ == '__main__':
+    try:
+        logger.info('включение бота')
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.exception('выключение бота')

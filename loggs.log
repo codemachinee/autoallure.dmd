@@ -1,0 +1,404 @@
+2025-01-30 11:50:08 | INFO | включение бота
+2025-01-30 11:51:03 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 34, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x00000174F810A8C0>
+    │       └ <function run at 0x00000174ECCCC940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x00000174F8031AF0>
+           │    └ <function BaseEventLoop.run_until_complete at 0x00000174EED241F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x00000174EEDD89D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000174EED25C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 11.54700000000048
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 11.54700000000048
+    │    └ <function IocpProactor._poll at 0x00000174EEDD9900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 11548
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 11:51:14 | INFO | включение бота
+2025-01-30 11:52:25 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 34, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x0000025B43D9A8C0>
+    │       └ <function run at 0x0000025B3894C940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x0000025B43CC1930>
+           │    └ <function BaseEventLoop.run_until_complete at 0x0000025B3A9A41F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x0000025B3AA589D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000025B3A9A5C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 14.188000000000102
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 14.188000000000102
+    │    └ <function IocpProactor._poll at 0x0000025B3AA59900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 14189
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 11:52:36 | INFO | включение бота
+2025-01-30 12:02:45 | INFO | включение бота
+2025-01-30 12:04:29 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 35, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x0000025744A0A950>
+    │       └ <function run at 0x00000257395EC940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x0000025744931930>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000002573B6441F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000002573B6F89D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000002573B645C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 11.265999999999622
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 11.265999999999622
+    │    └ <function IocpProactor._poll at 0x000002573B6F9900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 11266
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 12:04:39 | INFO | включение бота
+2025-01-30 12:05:50 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 35, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x00000233E582A950>
+    │       └ <function run at 0x00000233DA3DC940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x00000233E5751930>
+           │    └ <function BaseEventLoop.run_until_complete at 0x00000233DC4341F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x00000233DC4E89D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000233DC435C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 15.563000000000102
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 15.563000000000102
+    │    └ <function IocpProactor._poll at 0x00000233DC4E9900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 15564
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 12:06:00 | INFO | включение бота
+2025-01-30 12:08:51 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 35, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000001A7FC6BA950>
+    │       └ <function run at 0x000001A7F12DC940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000001A7FC5E1930>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000001A7F33341F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000001A7F33E89D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000001A7F3335C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 5.531999999999243
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 5.531999999999243
+    │    └ <function IocpProactor._poll at 0x000001A7F33E9900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 5532
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 12:09:01 | INFO | включение бота
+2025-01-30 12:11:15 | INFO | включение бота
+2025-01-30 12:11:48 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 35, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000001C1B9A3A950>
+    │       └ <function run at 0x000001C1AE56C940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000001C1B9961930>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000001C1B05C41F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000001C1B06889D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000001C1B05C5C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 13.375
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 13.375
+    │    └ <function IocpProactor._poll at 0x000001C1B0689900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 13375
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 12:11:59 | INFO | включение бота
+2025-01-30 12:15:24 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 35, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000002B5DF06A950>
+    │       └ <function run at 0x000002B5D3C2C940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000002B5DEF91930>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000002B5D5C841F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000002B5D5D389D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000002B5D5C85C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 15.0
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 15.0
+    │    └ <function IocpProactor._poll at 0x000002B5D5D39900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 15000
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 12:15:36 | INFO | включение бота
+2025-01-30 12:17:40 | INFO | включение бота
+2025-01-30 12:18:05 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 35, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x0000020728FCA950>
+    │       └ <function run at 0x000002071DB1C940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x0000020728EF1930>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000002071FB741F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000002071FC289D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000002071FB75C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 9.953999999999724
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 9.953999999999724
+    │    └ <function IocpProactor._poll at 0x000002071FC29900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 9954
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-01-30 12:18:16 | INFO | включение бота
