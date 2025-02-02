@@ -6,9 +6,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import FSInputFile
 
 from passwords import*
-# from functions import*
 from handlers import *
 from loggs import *
+from FSM import *
 
 
 # token = autoallure
@@ -22,7 +22,9 @@ dp.message.register(start, Command(commands='start'))
 dp.message.register(help, Command(commands='help'))
 dp.message.register(price, Command(commands='price'))
 dp.message.register(result, Command(commands='result'))
-dp.callback_query.register(check_callback, Form_registration.registration_geo)
+dp.message.register(anoter_model_registration, Another_model.model)
+dp.callback_query.register(check_callbacks, Another_model.marka)
+dp.callback_query.register(check_callbacks, Another_model.model)
 dp.callback_query.register(check_callbacks, F.data)
 dp.message.register(check_message, F.text)
 

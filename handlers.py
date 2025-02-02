@@ -1,7 +1,8 @@
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message, FSInputFile, ReplyKeyboardRemove
-from test_functions import *
+from aiogram.types import CallbackQuery, Message, FSInputFile, ReplyKeyboardRemove, InputMediaPhoto
+from keyboards import *
 from passwords import *
+from FSM import *
 admin_account = igor
 
 
@@ -55,16 +56,57 @@ async def price(message: Message, bot):
 
 
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
-    if callback.data == 'page_one':
-        await Buttons(bot, callback.message).marka_buttons(next_button='page_two', back_button=None)
-    elif callback.data == 'page_two':
-        await Buttons(bot, callback.message).marka_buttons(next_button=None, back_button='page_one')
-    elif callback.data == 'AUDI':
-        await Buttons(bot, callback.message).models_buttons(callback.data)
-    elif callback.data == 'price_menu':
-        await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
-                                                                           f'автомобиля 🚐:',
-                                    message_id=callback.message.message_id, reply_markup=kb_price)
+    async with aiofiles.open('price.json', "r", encoding="utf-8") as file:
+        content = await file.read()
+        data = json.loads(content)
+        if callback.data == 'page_one':
+            await Buttons(bot, callback.message).marka_buttons(next_button='page_two', back_button=None)
+        elif callback.data == 'page_two':
+            await Buttons(bot, callback.message).marka_buttons(next_button=None, back_button='page_one')
+        elif callback.data in list(data.keys()):
+            await state.update_data(marka=callback.data)
+            await Buttons(bot, callback.message).models_buttons(callback.data)
+        elif callback.data == 'price_menu':
+            await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
+                                                                               f'автомобиля 🚐:',
+                                        message_id=callback.message.message_id, reply_markup=kb_price)
+        elif callback.data == 'price_menu_two':
+            await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
+                                                                               f'автомобиля 🚐:',
+                                        message_id=callback.message.message_id, reply_markup=kb_price_two)
+        elif callback.data.startswith('another_'):
+            kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="↩️ Вернуться",
+                                                                             callback_data=callback.data[8:])]])
+            await state.update_data(marka=callback.data[8:])
+            await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста введите марку Вашего '
+                                                                               f'автомобиля ⌨️:',
+                                        message_id=callback.message.message_id, reply_markup=kb)
+            await state.set_state(Another_model.model)
+        elif callback.data.endswith('_class'):
+            mes = await bot.edit_message_text(text=f'загрузка..🚀', chat_id=callback.message.chat.id, message_id=callback.message.message_id)
+            data = await state.get_data()
+            data_marka = data.get('marka')
+            file_open = FSInputFile(f'{callback.data}.png', 'rb')
+            media = InputMediaPhoto(media=file_open, caption=f'Готово!\n'
+                                                             f'Стоимость услуг для Вашего автомобиля {data_marka}\n'
+                                                             f'соответствует {callback.data[0]} ценовому классу.\n'
+                                                             f'/help - справка по боту \n'
+                                                             f'/result - посмотреть на отзывы и результат работ')
+            await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
+            # await bot.send_photo(callback.message.chat.id, file_open, caption=f'Готово!\n'
+            #                                                     f'Стоимость услуг для Вашего автомобиля {data_marka}\n'
+            #                                                     f'соответствует {callback.data[0]} ценовому классу.\n'
+            #                                                     f'/help - справка по боту \n'
+            #                                                     f'/result - посмотреть на отзывы и результат работ')
+            await Buttons(bot, callback.message).zayavka_buttons(data_marka)
+            await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
+                                                  f'Имя: {callback.from_user.first_name}\n'
+                                                  f'Фамилия: {callback.from_user.last_name}\n'
+                                                  f'Никнейм: {callback.from_user.username}\n'
+                                                  f'Ссылка: @{callback.from_user.username}\n'
+                                                  f'Авто: {data_marka} {callback.data[0]} класса')
+            await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
+            await state.clear()
 
 
 async def check_message(message: Message, bot):

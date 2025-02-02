@@ -5,7 +5,7 @@ from telebot import types
 # библиотека для выполнения фоновых процессов в определенное время
 # from apscheduler.schedulers.background import BackgroundScheduler
 # импорт из файла functions
-from functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message, admin_account
+from old_functions import marks_buttons, model_buttons, search_models, zayavka_done, clients_base, rasylka_message, admin_account
 from passwords import *
 
 bot = telebot.TeleBot(codemashine_test)

@@ -451,3 +451,605 @@ KeyboardInterrupt
 2025-02-02 15:20:25 | INFO | включение бота
 2025-02-02 15:21:47 | INFO | включение бота
 2025-02-02 15:25:26 | INFO | включение бота
+2025-02-02 16:41:19 | INFO | включение бота
+2025-02-02 16:44:26 | INFO | включение бота
+2025-02-02 16:47:28 | INFO | включение бота
+2025-02-02 16:48:08 | ERROR | выключение бота
+Traceback (most recent call last):
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 2199, in <module>
+    main()
+    └ <function main at 0x00000133B68CBD00>
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 2181, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+              │        │   │                          └ False
+              │        │   └ {'port': 56643, 'vm_type': None, 'client': '127.0.0.1', 'server': False, 'DEBUG_RECORD_SOCKET_READS': False, 'multiproc': Fal...
+              │        └ <function PyDB.run at 0x00000133B68CAD40>
+              └ <__main__.PyDB object at 0x00000133B688AB30>
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 1493, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+           │    │     │          │               │            │     │        └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+           │    │     │          │               │            │     └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+           │    │     │          │               │            └ 'D:\\PycharmProjects\\autoallure.dmd\\test_main.py'
+           │    │     │          │               └ None
+           │    │     │          └ ''
+           │    │     └ False
+           │    └ <function PyDB._exec at 0x00000133B68CADD0>
+           └ <__main__.PyDB object at 0x00000133B688AB30>
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 1500, in _exec
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+    │             │        │     │        └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+    │             │        │     └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+    │             │        └ 'D:\\PycharmProjects\\autoallure.dmd\\test_main.py'
+    │             └ <function execfile at 0x00000133B5A1A200>
+    └ <module '_pydev_bundle.pydev_imports' from 'D:\\Programs\\JetBrains\\PyCharm Community Edition 2023.2.1\\plugins\\python-ce\\...
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\_pydev_imps\_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+                 │              │              │     └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+                 │              │              └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+                 │              └ 'D:\\PycharmProjects\\autoallure.dmd\\test_main.py'
+                 └ "import asyncio\n\nfrom aiogram import Bot, Dispatcher, F\nfrom aiogram.filters import Command\nfrom aiogram.fsm.context impo...
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 37, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x00000133BEF1DFC0>
+    │       └ <function run at 0x00000133B6863370>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x00000133BEEE9150>
+           │    └ <function BaseEventLoop.run_until_complete at 0x00000133B6864DC0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x00000133B68AF250>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000133B6866710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 10.15700000000652
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 10.15700000000652
+    │    └ <function IocpProactor._poll at 0x00000133B68B01F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 10158
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 16:48:22 | INFO | включение бота
+2025-02-02 16:50:35 | INFO | включение бота
+2025-02-02 16:54:22 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 37, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x0000026FEBD87C70>
+    │       └ <function run at 0x0000026FE2903250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x0000026FEBD1ACE0>
+           │    └ <function BaseEventLoop.run_until_complete at 0x0000026FE290CCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x0000026FE2A7D6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000026FE290E710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 9.687999999965541
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 9.687999999965541
+    │    └ <function IocpProactor._poll at 0x0000026FE2A7E5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 9688
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 16:55:11 | INFO | включение бота
+2025-02-02 16:58:36 | INFO | включение бота
+2025-02-02 16:59:34 | INFO | включение бота
+2025-02-02 17:02:06 | INFO | включение бота
+2025-02-02 17:04:00 | INFO | включение бота
+2025-02-02 17:08:01 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 37, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x00000152EDCE7C70>
+    │       └ <function run at 0x00000152E4863250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x00000152EDC7ACE0>
+           │    └ <function BaseEventLoop.run_until_complete at 0x00000152E486CCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x00000152E49CD6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000152E486E710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 15.0
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 15.0
+    │    └ <function IocpProactor._poll at 0x00000152E49CE5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 15000
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 17:08:13 | INFO | включение бота
+2025-02-02 17:09:36 | INFO | включение бота
+2025-02-02 17:10:32 | INFO | включение бота
+2025-02-02 17:11:46 | ERROR | выключение бота
+Traceback (most recent call last):
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 2199, in <module>
+    main()
+    └ <function main at 0x00000180961CFD00>
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 2181, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+              │        │   │                          └ False
+              │        │   └ {'port': 56960, 'vm_type': None, 'client': '127.0.0.1', 'server': False, 'DEBUG_RECORD_SOCKET_READS': False, 'multiproc': Fal...
+              │        └ <function PyDB.run at 0x00000180961CED40>
+              └ <__main__.PyDB object at 0x000001809618AB30>
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 1493, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+           │    │     │          │               │            │     │        └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+           │    │     │          │               │            │     └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+           │    │     │          │               │            └ 'D:\\PycharmProjects\\autoallure.dmd\\test_main.py'
+           │    │     │          │               └ None
+           │    │     │          └ ''
+           │    │     └ False
+           │    └ <function PyDB._exec at 0x00000180961CEDD0>
+           └ <__main__.PyDB object at 0x000001809618AB30>
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\pydevd.py", line 1500, in _exec
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+    │             │        │     │        └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+    │             │        │     └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+    │             │        └ 'D:\\PycharmProjects\\autoallure.dmd\\test_main.py'
+    │             └ <function execfile at 0x000001809531A200>
+    └ <module '_pydev_bundle.pydev_imports' from 'D:\\Programs\\JetBrains\\PyCharm Community Edition 2023.2.1\\plugins\\python-ce\\...
+
+  File "D:\Programs\JetBrains\PyCharm Community Edition 2023.2.1\plugins\python-ce\helpers\pydev\_pydev_imps\_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+                 │              │              │     └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+                 │              │              └ {'__name__': '__main__', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader objec...
+                 │              └ 'D:\\PycharmProjects\\autoallure.dmd\\test_main.py'
+                 └ "import asyncio\n\nfrom aiogram import Bot, Dispatcher, F\nfrom aiogram.filters import Command\nfrom aiogram.fsm.context impo...
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 37, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000001809E7CA3B0>
+    │       └ <function run at 0x0000018096163370>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000001809E795540>
+           │    └ <function BaseEventLoop.run_until_complete at 0x0000018096164DC0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x00000180961AF250>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000018096166710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 64.98499999998603
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 64.98499999998603
+    │    └ <function IocpProactor._poll at 0x00000180961B41F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 64985
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 17:11:48 | INFO | включение бота
+2025-02-02 17:25:23 | INFO | включение бота
+2025-02-02 17:29:03 | INFO | включение бота
+2025-02-02 17:32:07 | INFO | включение бота
+2025-02-02 17:37:19 | INFO | включение бота
+2025-02-02 17:40:45 | INFO | включение бота
+2025-02-02 17:41:48 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 37, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x0000023388313BE0>
+    │       └ <function run at 0x00000233FEE33250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x00000233882AAB90>
+           │    └ <function BaseEventLoop.run_until_complete at 0x00000233FEE3CCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x00000233FEFAD6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x00000233FEE3E710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 15.454000000027008
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 15.454000000027008
+    │    └ <function IocpProactor._poll at 0x00000233FEFAE5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 15455
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 17:41:50 | INFO | включение бота
+2025-02-02 17:56:19 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 37, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x0000021AF5227BE0>
+    │       └ <function run at 0x0000021AEBE23250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x0000021AF51BA810>
+           │    └ <function BaseEventLoop.run_until_complete at 0x0000021AEBE2CCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x0000021AEBEED6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000021AEBE2E710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 15.98499999998603
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 15.98499999998603
+    │    └ <function IocpProactor._poll at 0x0000021AEBEEE5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 15985
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 17:56:22 | INFO | включение бота
+2025-02-02 18:00:59 | INFO | включение бота
+2025-02-02 18:31:34 | INFO | включение бота
+2025-02-02 18:34:59 | INFO | включение бота
+2025-02-02 18:35:53 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 38, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000002BBA1DEFBE0>
+    │       └ <function run at 0x000002BB98963250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000002BBA1D76CE0>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000002BB9896CCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000002BB98A3D6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000002BB9896E710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 13.687999999965541
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 13.687999999965541
+    │    └ <function IocpProactor._poll at 0x000002BB98A3E5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 13688
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 18:36:14 | INFO | включение бота
+2025-02-02 18:44:32 | INFO | включение бота
+2025-02-02 18:44:56 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 38, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000002AB1ACBFBE0>
+    │       └ <function run at 0x000002AB11833250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000002AB1AC46F10>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000002AB1183CCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000002AB119AD6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000002AB1183E710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 14.079000000027008
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 14.079000000027008
+    │    └ <function IocpProactor._poll at 0x000002AB119AE5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 14080
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 18:45:07 | INFO | включение бота
+2025-02-02 18:45:10 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 38, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000001F01497FC70>
+    │       └ <function run at 0x000001F00B653250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000001F014906E30>
+           │    └ <function BaseEventLoop.run_until_complete at 0x000001F00B65CCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x000001F00B70D6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x000001F00B65E710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 14.922000000020489
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 14.922000000020489
+    │    └ <function IocpProactor._poll at 0x000001F00B70E5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 14923
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 18:45:13 | INFO | включение бота
+2025-02-02 18:45:14 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "D:\PycharmProjects\autoallure.dmd\test_main.py", line 38, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x000002693304FC70>
+    │       └ <function run at 0x0000026929BE3250>
+    └ <module 'asyncio' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x0000026932FD6F80>
+           │    └ <function BaseEventLoop.run_until_complete at 0x0000026929BECCA0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x0000026929D1D6C0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000026929BEE710>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 60.23499999998603
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 60.23499999998603
+    │    └ <function IocpProactor._poll at 0x0000026929D1E5F0>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\ihlop\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 60235
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\ihlop\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-02 18:45:23 | INFO | включение бота
+2025-02-02 18:53:04 | INFO | включение бота
+2025-02-02 18:56:02 | INFO | включение бота
+2025-02-02 18:58:06 | INFO | включение бота
+2025-02-02 19:09:01 | INFO | включение бота
+2025-02-02 19:10:24 | INFO | включение бота
+2025-02-02 19:13:30 | INFO | включение бота
+2025-02-02 19:15:26 | INFO | включение бота
+2025-02-02 19:19:48 | INFO | включение бота
+2025-02-02 19:22:32 | INFO | включение бота
