@@ -1,6 +1,8 @@
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message, FSInputFile, ReplyKeyboardRemove
-from functions import*
+from test_functions import *
+from passwords import *
+admin_account = igor
 
 
 async def start(message: Message, bot):
@@ -48,11 +50,21 @@ async def result(message: Message, bot):
 
 
 async def price(message: Message, bot):
-    marks_buttons(bot, message)
+    await bot.send_message(text=f'Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
+                           reply_markup=kb_price)
 
 
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
-    pass
+    if callback.data == 'page_one':
+        await Buttons(bot, callback.message).marka_buttons(next_button='page_two', back_button=None)
+    elif callback.data == 'page_two':
+        await Buttons(bot, callback.message).marka_buttons(next_button=None, back_button='page_one')
+    elif callback.data == 'AUDI':
+        await Buttons(bot, callback.message).models_buttons(callback.data)
+    elif callback.data == 'price_menu':
+        await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
+                                                                           f'автомобиля 🚐:',
+                                    message_id=callback.message.message_id, reply_markup=kb_price)
 
 
 async def check_message(message: Message, bot):

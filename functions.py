@@ -8,7 +8,7 @@ from random import *
 from passwords import *
 
 admin_account = igor
-# admin_account = 367683013 # Костин
+# admin_account = kostya
 
 
 def marks_buttons(bot, message):  # функция определяющая клавиатуру с марками авто
