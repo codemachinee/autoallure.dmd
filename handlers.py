@@ -11,7 +11,7 @@ async def start(message: Message, bot):
         start_file = FSInputFile(r'start_logo.png', 'rb')
         await bot.send_photo(message.chat.id, start_file, caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
                                                                   f'надежный сервис и помощник по уходу за Вашим '
-                                                                  f'автомобилем.﻿🚘\n\n'
+                                                                  f'автомобилем.🚘\n\n'
                                                                   f'/price - рассчет цены на услуги autoallure для '
                                                                   f'Вашего авто\n/help - все возможности бота\n\n'
                                                                   f'режим: Администратор')
@@ -21,7 +21,7 @@ async def start(message: Message, bot):
         await bot.send_photo(message.chat.id, start_file,
                              caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
                                      f'надежный сервис и помощник по уходу за Вашим '
-                                     f'автомобилем .﻿🚘\n\n'
+                                     f'автомобилем.🚘\n\n'
                                      f'/price - рассчет цены на услуги autoallure для '
                                      f'Вашего авто\n/help - все возможности бота\n\n')
 
@@ -50,9 +50,18 @@ async def result(message: Message, bot):
                                             '1ZoR3prmxJtCmeW8Ik-rDB0S4FxpzaWPc')
 
 
-async def price(message: Message, bot):
+async def sent_message(message: Message, bot, state: FSMContext):
+    if message.chat.id == admin_account:
+        await bot.send_message(admin_account, 'Введи id чата клиента, которому нужно написать от лица бота')
+        await state.set_state(Message_from_admin.user_id)
+    else:
+        await bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
+
+
+async def price(message: Message, bot, state: FSMContext):
     await bot.send_message(text=f'Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
                            reply_markup=kb_price)
+    await state.clear()
 
 
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
@@ -63,6 +72,39 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
             await Buttons(bot, callback.message).marka_buttons(next_button='page_two', back_button=None)
         elif callback.data == 'page_two':
             await Buttons(bot, callback.message).marka_buttons(next_button=None, back_button='page_one')
+        elif callback.data == 'zayavka_yes':
+            if callback.from_user.username is not None:
+                await bot.edit_message_text(text=f'Заявка оформлена и передана мастеру, с Вами свяжутся в ближайшее время. '
+                                            f'Спасибо, что выбрали нас.🤝\n\n'
+                                            f'Если желаете сообщить что-то дополнительно, отправьте в сообщении 💬\n'
+                                            f'Для нового рассчета воспользуйтесь командой /price',
+                                            chat_id=callback.message.chat.id, message_id=callback.message.message_id)
+                await bot.send_message(admin_account, f'🚨!!!СРОЧНО!!!🚨\n'
+                                                f'Хозяин, поступила ЗАЯВКА от:\n'
+                                                f'Псевдоним: @{callback.from_user.username}\n'
+                                                f'id чата: {callback.message.chat.id}\n'
+                                                f'Быстрее согласуй дату и закрой заявку пока он не слился'
+                                                f'\n'
+                                                f'В случае положительной отработки заявки не забудь перевести клиента из базы '
+                                                f'"потенциальные клиенты" в базу "старые клиенты" с помощью команды\n '
+                                                f'/next_level_base\n'
+                                                f'/sent_message - отправить сообщение с помощью бота')
+            else:
+                await bot.send_message(callback.message.chat.id, f'Заявка оформлена и передана мастеру, пожалуйста перейдите в чат '
+                                                  f'@pogonin21 и напишите любое сообщение или отправьте в ответ на это '
+                                                  f'сообщение свой номер телефона в любом формате. '
+                                                  f'Спасибо, что выбрали нас.🤝\n'
+                                                  f'Для нового рассчета воспользуйтесь командой /price')
+                await bot.send_message(admin_account, f'🚨!!!СРОЧНО!!!🚨\n'
+                                                f'Хозяин, поступила ЗАЯВКА от:\n'
+                                                f'Псевдоним: @{callback.from_user.username}\n'
+                                                f'id чата: {callback.message.chat.id}\n'
+                                                f'Быстрее согласуй дату и закрой заявку пока он не слился\n'
+                                                f'В случае положительной отработки заявки не забудь перевести клиента из базы '
+                                                f'"потенциальные клиенты" в базу "старые клиенты" с помощью команды\n '
+                                                f'/next_level_base\n'
+                                                f'/sent_message - отправить сообщение с помощью бота')
+            await state.set_state(Another_model.message)
         elif callback.data in list(data.keys()):
             await state.update_data(marka=callback.data)
             await Buttons(bot, callback.message).models_buttons(callback.data)
@@ -93,11 +135,6 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                                              f'/help - справка по боту \n'
                                                              f'/result - посмотреть на отзывы и результат работ')
             await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
-            # await bot.send_photo(callback.message.chat.id, file_open, caption=f'Готово!\n'
-            #                                                     f'Стоимость услуг для Вашего автомобиля {data_marka}\n'
-            #                                                     f'соответствует {callback.data[0]} ценовому классу.\n'
-            #                                                     f'/help - справка по боту \n'
-            #                                                     f'/result - посмотреть на отзывы и результат работ')
             await Buttons(bot, callback.message).zayavka_buttons(data_marka)
             await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
                                                   f'Имя: {callback.from_user.first_name}\n'

@@ -99,7 +99,7 @@ class Buttons:
 
     async def zayavka_buttons(self, marka):
         kb_zayavka = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text='Да, хочу!', callback_data='zayavka_yes'),
+            [InlineKeyboardButton(text='✅ Да, оставить завку!', callback_data='zayavka_yes'),
              InlineKeyboardButton(text='️↩️ Вернуться', callback_data=marka)]])
         await self.bot.send_message(self.message.chat.id, f'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?\n',
                                     reply_markup=kb_zayavka)

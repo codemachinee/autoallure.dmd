@@ -22,10 +22,20 @@ dp.message.register(start, Command(commands='start'))
 dp.message.register(help, Command(commands='help'))
 dp.message.register(price, Command(commands='price'))
 dp.message.register(result, Command(commands='result'))
+dp.message.register(sent_message, Command(commands='sent_message'))
+
 dp.message.register(anoter_model_registration, Another_model.model)
+
+dp.message.register(message_from_user, Another_model.message)
+
+dp.message.register(message_from_admin_chat, Message_from_admin.user_id)
+dp.message.register(message_from_admin_text, Message_from_admin.message)
+
 dp.callback_query.register(check_callbacks, Another_model.marka)
 dp.callback_query.register(check_callbacks, Another_model.model)
+
 dp.callback_query.register(check_callbacks, F.data)
+
 dp.message.register(check_message, F.text)
 
 

@@ -1053,3 +1053,72 @@ KeyboardInterrupt
 2025-02-02 19:15:26 | INFO | включение бота
 2025-02-02 19:19:48 | INFO | включение бота
 2025-02-02 19:22:32 | INFO | включение бота
+2025-02-03 14:09:00 | INFO | включение бота
+2025-02-03 14:12:54 | INFO | включение бота
+2025-02-03 14:14:38 | INFO | включение бота
+2025-02-03 14:30:01 | INFO | включение бота
+2025-02-03 15:13:00 | INFO | включение бота
+2025-02-03 15:16:09 | INFO | включение бота
+2025-02-03 15:17:58 | INFO | включение бота
+2025-02-03 15:20:20 | INFO | включение бота
+2025-02-03 15:21:34 | INFO | включение бота
+2025-02-03 15:28:07 | INFO | включение бота
+2025-02-03 15:31:22 | INFO | включение бота
+2025-02-03 15:32:42 | INFO | включение бота
+2025-02-03 15:37:32 | INFO | включение бота
+2025-02-03 15:46:10 | INFO | включение бота
+2025-02-03 15:53:45 | INFO | включение бота
+2025-02-03 15:56:03 | INFO | включение бота
+2025-02-03 16:15:55 | INFO | включение бота
+2025-02-03 16:33:22 | INFO | включение бота
+2025-02-03 16:40:16 | INFO | включение бота
+2025-02-03 16:43:30 | ERROR | выключение бота
+Traceback (most recent call last):
+
+> File "C:\Users\Hloapps\PycharmProjects\autoallure.dmd\test_main.py", line 48, in <module>
+    asyncio.run(main())
+    │       │   └ <function main at 0x00000283300B7490>
+    │       └ <function run at 0x0000028324BCC940>
+    └ <module 'asyncio' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\lib\\asyncio\\__init__.py'>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+           │    │                  └ <coroutine object main at 0x000002832FEAA8F0>
+           │    └ <function BaseEventLoop.run_until_complete at 0x0000028326C341F0>
+           └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 636, in run_until_complete
+    self.run_forever()
+    │    └ <function ProactorEventLoop.run_forever at 0x0000028326CF89D0>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 321, in run_forever
+    super().run_forever()
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 603, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x0000028326C35C60>
+    └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 1871, in _run_once
+    event_list = self._selector.select(timeout)
+                 │    │                └ 15.985000000000582
+                 │    └ None
+                 └ <ProactorEventLoop running=False closed=True debug=False>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 444, in select
+    self._poll(timeout)
+    │    │     └ 15.985000000000582
+    │    └ <function IocpProactor._poll at 0x0000028326CF9900>
+    └ <IocpProactor overlapped#=0 result#=0 closed>
+
+  File "C:\Users\Hloapps\AppData\Local\Programs\Python\Python310\lib\asyncio\windows_events.py", line 797, in _poll
+    status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
+             │           │                         │    │      └ 15986
+             │           │                         │    └ None
+             │           │                         └ <IocpProactor overlapped#=0 result#=0 closed>
+             │           └ <built-in function GetQueuedCompletionStatus>
+             └ <module '_overlapped' from 'C:\\Users\\Hloapps\\AppData\\Local\\Programs\\Python\\Python310\\DLLs\\_overlapped.pyd'>
+
+KeyboardInterrupt
+2025-02-03 16:46:11 | INFO | включение бота
