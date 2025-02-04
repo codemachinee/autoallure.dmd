@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 
 import gspread
@@ -8,11 +9,10 @@ from handlers import admin_account
 
 class clients_base:  # класс базы данных
 
-    def __init__(self, bot, message, auto_model, perehvat=None):
+    def __init__(self, bot, message, auto_model=None):
         self.bot = bot
         self.message = message
         self.auto_model = auto_model
-        self.perehvat = perehvat
         gc = gspread.service_account(filename='base_key.json')  # доступ к гугл табл по ключевому файлу аккаунта разраба
         # открытие таблицы по юрл адресу:
         sh = gc.open('autoallure_dmd')
@@ -52,37 +52,32 @@ class clients_base:  # класс базы данных
             await self.bot.send_message(admin_account, 'Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
                                                 'косяк воспользуйся командой /next_level_base снова')
 
-    async def rasylka_v_bazu(self):  # функция рассылки постов в базы
-        kb5 = types.ReplyKeyboardRemove()  # удаление клавиатуры
-        kb6 = types.InlineKeyboardMarkup(row_width=1)
-        but1 = types.InlineKeyboardButton(text='Конечно!', callback_data='btn')
-        kb6.add(but1)
-        if self.perehvat == 'Общая база клиентов':
-            await self.bot.send_message(admin_account, '...', reply_markup=kb5)
+    async def rasylka_v_bazu(self, base):  # функция рассылки постов в базы
+        if base == 'Общая база клиентов':
             for i in range(1, len(self.worksheet.col_values(1))):
                 try:
-                    await self.bot.copy_message(self.worksheet.col_values(1)[i], admin_account, self.message, reply_markup=kb5)
-                    #self.bot.send_message(self.worksheet.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                    await asyncio.sleep(0.3)
+                    await self.bot.copy_message(self.worksheet.col_values(1)[i], admin_account, self.message.message_id)
                 except Exception as ex:
                     await self.bot.send_message(admin_account, f'Босс, @{self.worksheet.col_values(2)[i]} заблочил меня \n'
                                                          f'Похоже настало время набить ебало...')
             await self.bot.send_message(admin_account, 'Босс, рассылка в общую базу выполнена ✅')
-        if self.perehvat == 'База потенциальных клиентов':
-            await self.bot.send_message(admin_account, '...', reply_markup=kb5)
+        elif base == 'База потенциальных клиентов':
             for i in range(1, len(self.worksheet.col_values(1))):
                 try:
-                    await self.bot.copy_message(self.worksheet2.col_values(1)[i], admin_account, self.message, reply_markup=kb5)
+                    await self.bot.copy_message(self.worksheet2.col_values(1)[i], admin_account, self.message.message_id)
                     #self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
                 except Exception as ex:
                     await self.bot.send_message(admin_account, f'Босс, @{self.worksheet2.col_values(2)[i]} заблочил меня \n'
                                                          f'Похоже настало время набить ебало...')
             await self.bot.send_message(admin_account, 'Босс, рассылка в базу потенциальных клиентов выполнена ✅')
-        if self.perehvat == 'База старых клиентов':
-            await self.bot.send_message(admin_account, '...', reply_markup=kb5)
-            for i in range(0, len(self.worksheet.col_values(1))):
+        elif base == 'База старых клиентов':
+            for i in range(1, len(self.worksheet.col_values(1))):
                 try:
-                    await self.bot.copy_message(self.worksheet3.col_values(1)[i], admin_account, self.message, reply_markup=kb5)
+                    await self.bot.copy_message(self.worksheet3.col_values(1)[i], admin_account, self.message.message_id)
                     #self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
+                except IndexError as ex:
+                    await self.bot.send_message(admin_account, 'Босс, рассылка в базу старых клиентов выполнена ✅')
                 except Exception as ex:
                     await self.bot.send_message(admin_account, f'Босс, @{self.worksheet3.col_values(2)[i]} заблочил меня \n'
                                                          f'Похоже настало время набить ебало...')

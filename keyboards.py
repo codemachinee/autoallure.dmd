@@ -103,3 +103,11 @@ class Buttons:
              InlineKeyboardButton(text='️↩️ Вернуться', callback_data=marka)]])
         await self.bot.send_message(self.message.chat.id, f'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?\n',
                                     reply_markup=kb_zayavka)
+
+    async def rasylka_buttons(self):
+        kb_rasylka = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text='Общая база клиентов', callback_data='Общая база клиентов')],
+            [InlineKeyboardButton(text='️База потенциальных клиентов', callback_data="База потенциальных клиентов")],
+            [InlineKeyboardButton(text='️База старых клиентов', callback_data="База старых клиентов")]])
+        await self.bot.send_message(text='Выберите базу для отправки рассылки:', chat_id=admin_account,
+                                         reply_markup=kb_rasylka)

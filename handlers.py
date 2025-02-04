@@ -6,7 +6,8 @@ from FSM import *
 admin_account = igor
 
 
-async def start(message: Message, bot):
+async def start(message: Message, bot, state: FSMContext):
+    await state.clear()
     if message.chat.id == admin_account:
         start_file = FSInputFile(r'start_logo.png', 'rb')
         await bot.send_photo(message.chat.id, start_file, caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
@@ -26,7 +27,8 @@ async def start(message: Message, bot):
                                      f'Вашего авто\n/help - все возможности бота\n\n')
 
 
-async def help(message: Message, bot):
+async def help(message: Message, bot, state: FSMContext):
+    await state.clear()
     if message.chat.id == admin_account:      # условия демонстрации различных команд для админа и клиентов
         await bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
                                                      f'/price -  рассчет услуг для любого авто\n'
@@ -45,12 +47,14 @@ async def help(message: Message, bot):
                                                      f'/result - посмотреть на отзывы и галерею с результатом работ')
 
 
-async def result(message: Message, bot):
+async def result(message: Message, bot, state: FSMContext):
+    await state.clear()
     await bot.send_message(message.chat.id, 'перейдите по ссылке: https://drive.google.com/drive/folders/'
                                             '1ZoR3prmxJtCmeW8Ik-rDB0S4FxpzaWPc')
 
 
 async def sent_message(message: Message, bot, state: FSMContext):
+    await state.clear()
     if message.chat.id == admin_account:
         await bot.send_message(admin_account, 'Введи id чата клиента, которому нужно написать от лица бота')
         await state.set_state(Message_from_admin.user_id)
@@ -59,9 +63,19 @@ async def sent_message(message: Message, bot, state: FSMContext):
 
 
 async def price(message: Message, bot, state: FSMContext):
+    await state.clear()
     await bot.send_message(text=f'Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
                            reply_markup=kb_price)
+
+
+async def post(message: Message, bot, state: FSMContext):
     await state.clear()
+    if message.chat.id == admin_account:
+        await Buttons(bot, message).rasylka_buttons()
+        await state.set_state(Rassylka.post)
+
+    else:
+        bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
 
 
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
@@ -144,6 +158,21 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                                   f'Авто: {data_marka} {callback.data[0]} класса')
             await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
             await state.clear()
+        elif callback.data == 'Общая база клиентов':
+            await bot.edit_message_text(text='База для рассылки: Общая база клиентов\nОтправь мне пост 💬',
+                                        chat_id=admin_account, message_id=callback.message.message_id)
+            await state.update_data(base=callback.data)
+            await state.set_state(Rassylka.post)
+        elif callback.data == 'База потенциальных клиентов':
+            await bot.edit_message_text(text='База для рассылки: ️База потенциальных клиентов\nОтправь мне пост 💬',
+                                        chat_id=admin_account, message_id=callback.message.message_id)
+            await state.update_data(base=callback.data)
+            await state.set_state(Rassylka.post)
+        elif callback.data == 'База старых клиентов':
+            await bot.edit_message_text(text='База для рассылки: ️База старых клиентов\nОтправь мне пост 💬',
+                                        chat_id=admin_account, message_id=callback.message.message_id)
+            await state.update_data(base=callback.data)
+            await state.set_state(Rassylka.post)
 
 
 async def check_message(message: Message, bot):

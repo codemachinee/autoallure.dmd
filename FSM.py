@@ -19,6 +19,11 @@ class Message_from_admin(StatesGroup):
     message = State()
 
 
+class Rassylka(StatesGroup):
+    base = State()
+    post = State()
+
+
 async def anoter_model_registration(message, state: FSMContext, bot):
     data = await state.get_data()
     data_marka = data.get('marka')
@@ -63,3 +68,9 @@ async def message_from_admin_text(message, state: FSMContext, bot):
     await bot.copy_message(user_id, admin_account, message.message_id)
     await bot.send_message(admin_account, 'Ваше сообщение отправлено ✅')
     await state.clear()
+
+
+async def rassylka(message, bot, state: FSMContext):
+    data = await state.get_data()
+    data_base = data.get('base')
+    await clients_base(bot, message).rasylka_v_bazu(data_base)
