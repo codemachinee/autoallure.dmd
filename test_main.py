@@ -24,6 +24,7 @@ dp.message.register(price, Command(commands='price'))
 dp.message.register(result, Command(commands='result'))
 dp.message.register(post, Command(commands='post'))
 dp.message.register(sent_message, Command(commands='sent_message'))
+dp.message.register(next_level_base, Command(commands='next_level_base'))
 
 dp.message.register(anoter_model_registration, Another_model.model)
 
@@ -39,6 +40,8 @@ dp.callback_query.register(check_callbacks, Another_model.model)
 dp.callback_query.register(check_callbacks, Rassylka.post)
 
 dp.callback_query.register(check_callbacks, F.data)
+
+dp.message.register(next_level, Next_level_base.nickname)
 
 dp.message.register(check_message, F.text)
 

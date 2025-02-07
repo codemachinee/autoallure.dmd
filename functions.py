@@ -40,45 +40,53 @@ class clients_base:  # класс базы данных
                                   self.message.from_user.first_name, self.message.from_user.last_name,
                                  self.auto_model, str(datetime.now().date())]])
 
-    async def perevod_v_bazu(self):  # функция перевода из базы потенциальных клиентов в базу старых клиентов
+    async def perevod_v_bazu(self, nickname):  # функция перевода из базы потенциальных клиентов в базу старых клиентов
+        mess = await self.bot.send_message(admin_account, f'загрузка..🚀')
         try:
             worksheet_len3 = len(self.worksheet3.col_values(1)) + 1
-            cell = self.worksheet.find(self.perehvat)  # поиск ячейки с данными по ключевому слову
+            cell = self.worksheet2.find(nickname)  # поиск ячейки с данными по ключевому слову
             # запись клиента в свободную строку базы старых клиентов:
-            self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet.row_values(cell.row)])
+            self.worksheet3.update(f'A{worksheet_len3}:F{worksheet_len3}', [self.worksheet2.row_values(cell.row)])
             self.worksheet2.batch_clear([f"A{cell.row}:F{cell.row}"])  # удаление клиента из базы потенциальных
-            await self.bot.send_message(admin_account, 'Птичка в клетке ✅')
+            await self.bot.edit_message_text(text='Птичка в клетке ✅', chat_id=admin_account, message_id=mess.message_id)
         except AttributeError:
-            await self.bot.send_message(admin_account, 'Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
-                                                'косяк воспользуйся командой /next_level_base снова')
+            await self.bot.edit_message_text(chat_id=admin_account, text='Ошибка, пользователь отсутствует, будь внимательнее если осознал свой '
+                                                'косяк воспользуйся командой /next_level_base снова', message_id=mess.message_id)
 
     async def rasylka_v_bazu(self, base):  # функция рассылки постов в базы
+        mess = await self.bot.send_message(admin_account, f'загрузка..🚀')
         if base == 'Общая база клиентов':
             for i in range(1, len(self.worksheet.col_values(1))):
                 try:
                     await asyncio.sleep(0.3)
                     await self.bot.copy_message(self.worksheet.col_values(1)[i], admin_account, self.message.message_id)
                 except Exception as ex:
-                    await self.bot.send_message(admin_account, f'Босс, @{self.worksheet.col_values(2)[i]} заблочил меня \n'
-                                                         f'Похоже настало время набить ебало...')
-            await self.bot.send_message(admin_account, 'Босс, рассылка в общую базу выполнена ✅')
+                    await self.bot.edit_message_text(chat_id=admin_account, text=f'Босс, '
+                                                     f'@{self.worksheet.col_values(2)[i]} заблочил меня \n'
+                                                     f'Похоже настало время набить ебало...', message_id=mess.message_id)
+            await self.bot.edit_message_text(chat_id=admin_account, text='Босс, рассылка в общую базу выполнена ✅',
+                                             message_id=mess.message_id)
         elif base == 'База потенциальных клиентов':
-            for i in range(1, len(self.worksheet.col_values(1))):
+            for i in range(1, len(self.worksheet2.col_values(1))):
                 try:
+                    await asyncio.sleep(0.3)
                     await self.bot.copy_message(self.worksheet2.col_values(1)[i], admin_account, self.message.message_id)
                     #self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
                 except Exception as ex:
-                    await self.bot.send_message(admin_account, f'Босс, @{self.worksheet2.col_values(2)[i]} заблочил меня \n'
-                                                         f'Похоже настало время набить ебало...')
-            await self.bot.send_message(admin_account, 'Босс, рассылка в базу потенциальных клиентов выполнена ✅')
+                    await self.bot.edit_message_text(chat_id=admin_account, text=f'Босс, '
+                                                     f'@{self.worksheet.col_values(2)[i]} заблочил меня \n'
+                                                     f'Похоже настало время набить ебало...', message_id=mess.message_id)
+            await self.bot.edit_message_text(chat_id=admin_account, text='Босс, рассылка в общую базу выполнена ✅',
+                                             message_id=mess.message_id)
         elif base == 'База старых клиентов':
-            for i in range(1, len(self.worksheet.col_values(1))):
+            for i in range(1, len(self.worksheet3.col_values(1))):
                 try:
+                    await asyncio.sleep(0.3)
                     await self.bot.copy_message(self.worksheet3.col_values(1)[i], admin_account, self.message.message_id)
                     #self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
-                except IndexError as ex:
-                    await self.bot.send_message(admin_account, 'Босс, рассылка в базу старых клиентов выполнена ✅')
                 except Exception as ex:
-                    await self.bot.send_message(admin_account, f'Босс, @{self.worksheet3.col_values(2)[i]} заблочил меня \n'
-                                                         f'Похоже настало время набить ебало...')
-            await self.bot.send_message(admin_account, 'Босс, рассылка в базу старых клиентов выполнена ✅')
+                    await self.bot.edit_message_text(chat_id=admin_account, text=f'Босс, '
+                                                     f'@{self.worksheet.col_values(2)[i]} заблочил меня \n'
+                                                     f'Похоже настало время набить ебало...', message_id=mess.message_id)
+            await self.bot.edit_message_text(chat_id=admin_account, text='Босс, рассылка в общую базу выполнена ✅',
+                                             message_id=mess.message_id)

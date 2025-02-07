@@ -75,7 +75,17 @@ async def post(message: Message, bot, state: FSMContext):
         await state.set_state(Rassylka.post)
 
     else:
-        bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
+        await bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
+
+
+async def next_level_base(message: Message, bot, state: FSMContext):
+    await state.clear()
+    if message.chat.id == admin_account:
+        await bot.send_message(admin_account, 'Введи никнейм клиента без знака @, которого нужно переместить '
+                                              'в базу данных "старые клиенты"')
+        await state.set_state(Next_level_base.nickname)
+    else:
+        await bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
 
 
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):

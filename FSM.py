@@ -24,6 +24,10 @@ class Rassylka(StatesGroup):
     post = State()
 
 
+class Next_level_base(StatesGroup):
+    nickname = State()
+
+
 async def anoter_model_registration(message, state: FSMContext, bot):
     data = await state.get_data()
     data_marka = data.get('marka')
@@ -74,3 +78,9 @@ async def rassylka(message, bot, state: FSMContext):
     data = await state.get_data()
     data_base = data.get('base')
     await clients_base(bot, message).rasylka_v_bazu(data_base)
+    await state.clear()
+
+
+async def next_level(message, bot, state: FSMContext):
+    await clients_base(bot, message).perevod_v_bazu(message.text)
+    await state.clear()
