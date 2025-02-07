@@ -1,10 +1,8 @@
 # Импортируем необходимые классы из aiogram
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import CallbackQuery
 
-from functions import clients_base
-from old_functions import admin_account
+from functions import clients_base, admin_account
 
 
 # Определяем класс для состояния message
