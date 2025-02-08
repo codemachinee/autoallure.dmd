@@ -82,8 +82,13 @@ class Buttons:
             for i in data:
                 if i is None:
                     pass
-                else:
+                elif len(', '.join(i)) <= 41:
                     keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i),
+                                                                     callback_data=f"{data.index(i) + 1}_class")])
+                else:
+                    keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i[:len(i)//2]),
+                                                                     callback_data=f"{data.index(i) + 1}_class")])
+                    keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i[len(i)//2:]),
                                                                      callback_data=f"{data.index(i) + 1}_class")])
             another_button = types.InlineKeyboardButton(text="🚫Отсутствует в списке", callback_data=f'another_{marka}')
             if keys_list.index(marka) < 21:

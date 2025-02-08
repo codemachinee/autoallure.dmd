@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from aiogram.types import CallbackQuery, Message, FSInputFile, ReplyKeyboardRemove, InputMediaPhoto
 from loguru import logger
 
@@ -5,6 +7,7 @@ from keyboards import *
 from passwords import *
 from FSM import *
 from functions import admin_account
+from database import db
 
 
 async def start(message: Message, bot, state: FSMContext):
@@ -20,13 +23,17 @@ async def start(message: Message, bot, state: FSMContext):
                                                                       f'режим: Администратор')
 
         else:
-            start_file = FSInputFile(r'start_logo.png', 'rb')
-            await bot.send_photo(message.chat.id, start_file,
-                                 caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
-                                         f'надежный сервис и помощник по уходу за Вашим '
-                                         f'автомобилем.🚘\n\n'
-                                         f'/price - рассчет цены на услуги autoallure для '
-                                         f'Вашего авто\n/help - все возможности бота\n\n')
+            data_from_database = await db.search_in_table(message.chat.id)
+            if data_from_database is not False and data_from_database[1][0][4] >= 8:
+                pass
+            else:
+                start_file = FSInputFile(r'start_logo.png', 'rb')
+                await bot.send_photo(message.chat.id, start_file,
+                                     caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
+                                             f'надежный сервис и помощник по уходу за Вашим '
+                                             f'автомобилем.🚘\n\n'
+                                             f'/price - рассчет цены на услуги autoallure для '
+                                             f'Вашего авто\n/help - все возможности бота\n\n')
     except Exception as e:
         logger.exception('Ошибка в handlers/start', e)
         await bot.send_message(loggs_acc, f'Ошибка в handlers/start: {e}')
@@ -43,19 +50,30 @@ async def help(message: Message, bot, state: FSMContext):
                                                      f'/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
                                                      f'"старые клиенты"\n'
                                                      f'/sent_message -  отправка через бота сообщения клиенту по id чата\n'
-                                                     f'/result - посмотреть на отзывы и галерею с результатом работ')
+                                                     f'/result - посмотреть на отзывы и галерею с результатом работ\n'
+                                                     f'/day_visitors - пользователи посетившие бота сегодня\n'
+                                                     f'/reset_cash - сбросить кэш базы данных')
+
     else:
-        await bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
-                                                     f'/price -  рассчет услуг для любого авто\n'
-                                                     f'/start - инициализация бота\n'
-                                                     f'/help - справка по боту\n'
-                                                     f'/result - посмотреть на отзывы и галерею с результатом работ')
+        data_from_database = await db.search_in_table(message.chat.id)
+        if data_from_database is not False and data_from_database[1][0][4] >= 8:
+            pass
+        else:
+            await bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
+                                                         f'/price -  рассчет услуг для любого авто\n'
+                                                         f'/start - инициализация бота\n'
+                                                         f'/help - справка по боту\n'
+                                                         f'/result - посмотреть на отзывы и галерею с результатом работ')
 
 
 async def result(message: Message, bot, state: FSMContext):
     await state.clear()
-    await bot.send_message(message.chat.id, 'перейдите по ссылке: https://drive.google.com/drive/folders/'
-                                            '1ZoR3prmxJtCmeW8Ik-rDB0S4FxpzaWPc')
+    data_from_database = await db.search_in_table(message.chat.id)
+    if data_from_database is not False and data_from_database[1][0][4] >= 8:
+        pass
+    else:
+        await bot.send_message(message.chat.id, 'перейдите по ссылке: https://drive.google.com/drive/folders/'
+                                                '1ZoR3prmxJtCmeW8Ik-rDB0S4FxpzaWPc')
 
 
 async def sent_message(message: Message, bot, state: FSMContext):
@@ -73,8 +91,12 @@ async def sent_message(message: Message, bot, state: FSMContext):
 
 async def price(message: Message, bot, state: FSMContext):
     await state.clear()
-    await bot.send_message(text=f'Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
-                           reply_markup=kb_price)
+    data_from_database = await db.search_in_table(message.chat.id)
+    if data_from_database is not False and data_from_database[1][0][4] >= 8:
+        pass
+    else:
+        await bot.send_message(text=f'Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
+                               reply_markup=kb_price)
 
 
 async def post(message: Message, bot, state: FSMContext):
@@ -105,7 +127,56 @@ async def next_level_base(message: Message, bot, state: FSMContext):
         await bot.send_message(loggs_acc, f'Ошибка в handlers/next_level_base: {e}')
 
 
+async def reset_cash(message: Message, bot, state: FSMContext):
+    await state.clear()
+    try:
+        if message.chat.id == admin_account:
+            await db.delete_all_users()
+            await bot.send_message(message.chat.id, 'Кэш очищен',
+                                   message_thread_id=message.message_thread_id)
+        else:
+            await bot.send_message(message.chat.id, 'Недостаточно прав',
+                                   message_thread_id=message.message_thread_id)
+    except Exception as e:
+        logger.exception('Ошибка в handlers/reset_cashe', e)
+        await bot.send_message(loggs_acc, f'Ошибка в handlers/reset_cash: {e}')
+
+
+async def day_visitors(message: Message, bot, state: FSMContext):
+    await state.clear()
+    try:
+        if message.chat.id == admin_account:
+            data = await db.return_base_data()
+            if data is False:
+                await bot.send_message(message.chat.id, 'Сегодня пользователей не было')
+            else:
+                table_header = f"Пользователи воспользовавшиеся ботом сегодня {len(data)}:\n\n"
+                table_body = " *Telegram ID* | *Ссылка* | *Имя* | *Время* | *Ход*\n"
+                table_body += "-" * 44 + "\n"
+                for i in data:
+                    table_body += f"{i[0]} | @{i[1]} | {i[2]} | {i[3][11:16]} | {i[4]}\n" + ("-" * 44 + "\n")
+
+                await bot.send_message(message.chat.id, table_header + table_body, parse_mode="Markdown")
+        else:
+            await bot.send_message(message.chat.id, 'Недостаточно прав',
+                                   message_thread_id=message.message_thread_id)
+    except Exception as e:
+        logger.exception('Ошибка в handlers/day_visitors', e)
+        await bot.send_message(loggs_acc, f'Ошибка в handlers/day_visitors: {e}')
+
+
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
+    data_from_database = await db.search_in_table(callback.message.chat.id)
+    if callback.message.chat.id != admin_account:
+        if data_from_database is not False:
+            if data_from_database[1][0][4] >= 8:
+                pass
+
+            else:
+                await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now())
+        else:
+            await db.add_user(update_telegram_id=callback.message.chat.id, update_username=callback.from_user.username,
+                              update_name=callback.from_user.first_name, update_dates=datetime.now())
     try:
         async with aiofiles.open('price.json', "r", encoding="utf-8") as file:
             content = await file.read()
@@ -167,25 +238,34 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                             message_id=callback.message.message_id, reply_markup=kb)
                 await state.set_state(Another_model.model)
             elif callback.data.endswith('_class'):
-                mes = await bot.edit_message_text(text=f'загрузка..🚀', chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-                data = await state.get_data()
-                data_marka = data.get('marka')
-                file_open = FSInputFile(f'{callback.data}.png', 'rb')
-                media = InputMediaPhoto(media=file_open, caption=f'Готово!\n'
-                                                                 f'Стоимость услуг для Вашего автомобиля {data_marka}\n'
-                                                                 f'соответствует {callback.data[0]} ценовому классу.\n'
-                                                                 f'/help - справка по боту \n'
-                                                                 f'/result - посмотреть на отзывы и результат работ')
-                await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
-                await Buttons(bot, callback.message).zayavka_buttons(data_marka)
-                await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
-                                                      f'Имя: {callback.from_user.first_name}\n'
-                                                      f'Фамилия: {callback.from_user.last_name}\n'
-                                                      f'Никнейм: {callback.from_user.username}\n'
-                                                      f'Ссылка: @{callback.from_user.username}\n'
-                                                      f'Авто: {data_marka} {callback.data[0]} класса')
-                await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
-                await state.clear()
+                if data_from_database[1][0][4] >= 6:
+                    await bot.edit_message_text(chat_id=callback.message.chat.id,
+                                                text=f'Превышен дневной лимит обращений.',
+                                                message_id=callback.message.message_id)
+                    await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
+                                          update_number_of_requests=data_from_database[1][0][4] + 1)
+                else:
+                    mes = await bot.edit_message_text(text=f'загрузка..🚀', chat_id=callback.message.chat.id,
+                                                      message_id=callback.message.message_id)
+                    await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
+                                          update_number_of_requests=data_from_database[1][0][4] + 1)
+                    data = await state.get_data()
+                    data_marka = data.get('marka')
+                    file_open = FSInputFile(f'{callback.data}.png', 'rb')
+                    media = InputMediaPhoto(media=file_open, caption=f'Готово!\n'
+                                                                     f'Стоимость услуг для Вашего автомобиля {data_marka}\n'
+                                                                     f'соответствует {callback.data[0]} ценовому классу.\n'
+                                                                     f'/help - справка по боту \n'
+                                                                     f'/result - посмотреть на отзывы и результат работ')
+                    await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
+                    await Buttons(bot, callback.message).zayavka_buttons(data_marka)
+                    await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
+                                                          f'Имя: {callback.from_user.first_name}\n'
+                                                          f'Фамилия: {callback.from_user.last_name}\n'
+                                                          f'Никнейм: {callback.from_user.username}\n'
+                                                          f'Ссылка: @{callback.from_user.username}\n'
+                                                          f'Авто: {data_marka} {callback.data[0]} класса')
+                    await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
             elif callback.data == 'Общая база клиентов':
                 await bot.edit_message_text(text='База для рассылки: Общая база клиентов\nОтправь мне пост 💬',
                                             chat_id=admin_account, message_id=callback.message.message_id)

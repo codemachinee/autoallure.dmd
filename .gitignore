@@ -1,5 +1,7 @@
 passwords.py
 base_key.json
 loggs.log
-
+users.db
+users.db-shm
+users.db-wal
 venv
