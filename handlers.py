@@ -238,34 +238,35 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                             message_id=callback.message.message_id, reply_markup=kb)
                 await state.set_state(Another_model.model)
             elif callback.data.endswith('_class'):
-                if data_from_database[1][0][4] >= 6:
-                    await bot.edit_message_text(chat_id=callback.message.chat.id,
-                                                text=f'Превышен дневной лимит обращений.',
-                                                message_id=callback.message.message_id)
-                    await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
-                                          update_number_of_requests=data_from_database[1][0][4] + 1)
-                else:
-                    mes = await bot.edit_message_text(text=f'загрузка..🚀', chat_id=callback.message.chat.id,
-                                                      message_id=callback.message.message_id)
-                    await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
-                                          update_number_of_requests=data_from_database[1][0][4] + 1)
-                    data = await state.get_data()
-                    data_marka = data.get('marka')
-                    file_open = FSInputFile(f'{callback.data}.png', 'rb')
-                    media = InputMediaPhoto(media=file_open, caption=f'Готово!\n'
-                                                                     f'Стоимость услуг для Вашего автомобиля {data_marka}\n'
-                                                                     f'соответствует {callback.data[0]} ценовому классу.\n'
-                                                                     f'/help - справка по боту \n'
-                                                                     f'/result - посмотреть на отзывы и результат работ')
-                    await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
-                    await Buttons(bot, callback.message).zayavka_buttons(data_marka)
-                    await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
-                                                          f'Имя: {callback.from_user.first_name}\n'
-                                                          f'Фамилия: {callback.from_user.last_name}\n'
-                                                          f'Никнейм: {callback.from_user.username}\n'
-                                                          f'Ссылка: @{callback.from_user.username}\n'
-                                                          f'Авто: {data_marka} {callback.data[0]} класса')
-                    await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
+                mes = await bot.edit_message_text(text=f'загрузка..🚀', chat_id=callback.message.chat.id,
+                                                  message_id=callback.message.message_id)
+                if callback.message.chat.id != admin_account:
+                    if data_from_database[1][0][4] >= 6:
+                        await bot.edit_message_text(chat_id=callback.message.chat.id,
+                                                    text=f'Превышен дневной лимит обращений.',
+                                                    message_id=callback.message.message_id)
+                        await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
+                                              update_number_of_requests=data_from_database[1][0][4] + 1)
+                    else:
+                        await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
+                                              update_number_of_requests=data_from_database[1][0][4] + 1)
+                data = await state.get_data()
+                data_marka = data.get('marka')
+                file_open = FSInputFile(f'{callback.data}.png', 'rb')
+                media = InputMediaPhoto(media=file_open, caption=f'Готово!\n'
+                                                                 f'Стоимость услуг для Вашего автомобиля {data_marka}\n'
+                                                                 f'соответствует {callback.data[0]} ценовому классу.\n'
+                                                                 f'/help - справка по боту \n'
+                                                                 f'/result - посмотреть на отзывы и результат работ')
+                await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
+                await Buttons(bot, callback.message).zayavka_buttons(data_marka)
+                await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
+                                                      f'Имя: {callback.from_user.first_name}\n'
+                                                      f'Фамилия: {callback.from_user.last_name}\n'
+                                                      f'Никнейм: {callback.from_user.username}\n'
+                                                      f'Ссылка: @{callback.from_user.username}\n'
+                                                      f'Авто: {data_marka} {callback.data[0]} класса')
+                await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
             elif callback.data == 'Общая база клиентов':
                 await bot.edit_message_text(text='База для рассылки: Общая база клиентов\nОтправь мне пост 💬',
                                             chat_id=admin_account, message_id=callback.message.message_id)
