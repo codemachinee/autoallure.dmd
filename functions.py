@@ -5,8 +5,8 @@ import gspread
 from loguru import logger
 
 from passwords import *
-admin_account = igor
-# admin_account = kostya
+# admin_account = igor
+admin_account = kostya
 
 
 class clients_base:  # класс базы данных

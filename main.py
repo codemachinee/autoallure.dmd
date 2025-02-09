@@ -7,8 +7,8 @@ from FSM import *
 from database import *
 
 
-# token = autoallure
-token = codemashine_test
+token = autoallure
+# token = codemashine_test
 
 bot = Bot(token=token)
 dp = Dispatcher()
