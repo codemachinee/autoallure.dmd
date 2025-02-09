@@ -103,3 +103,4 @@ class clients_base:  # класс базы данных
         except Exception as e:
             logger.exception('Ошибка в functions/rasylka_v_bazu', e)
             await self.bot.send_message(loggs_acc, f'Ошибка в functions/rasylka_v_bazu: {e}')
+

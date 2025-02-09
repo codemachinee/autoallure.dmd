@@ -170,8 +170,7 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
     if callback.message.chat.id != admin_account:
         if data_from_database is not False:
             if data_from_database[1][0][4] >= 8:
-                pass
-
+                return
             else:
                 await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now())
         else:
@@ -186,7 +185,9 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
             elif callback.data == 'page_two':
                 await Buttons(bot, callback.message).marka_buttons(next_button=None, back_button='page_one')
             elif callback.data == 'zayavka_yes':
-                if callback.from_user.username is not None:
+                if callback.message.chat.id == admin_account:
+                    await bot.send_message(admin_account, f'не доступно для админа')
+                elif callback.from_user.username is not None:
                     await bot.edit_message_text(text=f'Заявка оформлена и передана мастеру, с Вами свяжутся в ближайшее время. '
                                                 f'Спасибо, что выбрали нас.🤝\n\n'
                                                 f'Если желаете сообщить что-то дополнительно, отправьте в сообщении 💬\n'
@@ -247,6 +248,7 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                                     message_id=callback.message.message_id)
                         await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
                                               update_number_of_requests=data_from_database[1][0][4] + 1)
+                        return
                     else:
                         await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
                                               update_number_of_requests=data_from_database[1][0][4] + 1)
@@ -260,13 +262,16 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                                                  f'/result - посмотреть на отзывы и результат работ')
                 await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
                 await Buttons(bot, callback.message).zayavka_buttons(data_marka)
-                await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
-                                                      f'Имя: {callback.from_user.first_name}\n'
-                                                      f'Фамилия: {callback.from_user.last_name}\n'
-                                                      f'Никнейм: {callback.from_user.username}\n'
-                                                      f'Ссылка: @{callback.from_user.username}\n'
-                                                      f'Авто: {data_marka} {callback.data[0]} класса')
-                await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
+                if callback.message.chat.id != admin_account and data_from_database[1][0][4] < 2:
+                    await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
+                                                          f'Имя: {callback.from_user.first_name}\n'
+                                                          f'Фамилия: {callback.from_user.last_name}\n'
+                                                          f'Никнейм: {callback.from_user.username}\n'
+                                                          f'Ссылка: @{callback.from_user.username}\n'
+                                                          f'Авто: {data_marka} {callback.data[0]} класса')
+                    await clients_base(bot, callback.message, auto_model=f'{data_marka} {callback.data[0]} класса').chec_and_record()
+                else:
+                    return
             elif callback.data == 'Общая база клиентов':
                 await bot.edit_message_text(text='База для рассылки: Общая база клиентов\nОтправь мне пост 💬',
                                             chat_id=admin_account, message_id=callback.message.message_id)
