@@ -13,7 +13,7 @@ from database import db
 async def start(message: Message, bot, state: FSMContext):
     await state.clear()
     try:
-        if message.chat.id == admin_account:
+        if message.chat.id == admin_account.admin:
             start_file = FSInputFile(r'start_logo.png', 'rb')
             await bot.send_photo(message.chat.id, start_file, caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
                                                                       f'надежный сервис и помощник по уходу за Вашим '
@@ -41,7 +41,7 @@ async def start(message: Message, bot, state: FSMContext):
 
 async def help(message: Message, bot, state: FSMContext):
     await state.clear()
-    if message.chat.id == admin_account:      # условия демонстрации различных команд для админа и клиентов
+    if message.chat.id == admin_account.admin:      # условия демонстрации различных команд для админа и клиентов
         await bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
                                                      f'/price -  рассчет услуг для любого авто\n'
                                                      f'/start - инициализация бота\n'
@@ -79,8 +79,8 @@ async def result(message: Message, bot, state: FSMContext):
 async def sent_message(message: Message, bot, state: FSMContext):
     try:
         await state.clear()
-        if message.chat.id == admin_account:
-            await bot.send_message(admin_account, 'Введи id чата клиента, которому нужно написать от лица бота')
+        if message.chat.id == admin_account.admin:
+            await bot.send_message(admin_account.admin, 'Введи id чата клиента, которому нужно написать от лица бота')
             await state.set_state(Message_from_admin.user_id)
         else:
             await bot.send_message(message.chat.id, 'У Вас нет прав для использования данной команды')
@@ -99,10 +99,25 @@ async def price(message: Message, bot, state: FSMContext):
                                reply_markup=kb_price)
 
 
+async def tester(message: Message, bot, state: FSMContext):
+    await state.clear()
+    if message.chat.id == igor:
+        await admin_account.set_admin()
+        if admin_account.admin == kostya:
+            await bot.send_message(text=f'Админ аккаунт сменен на kostya', chat_id=message.chat.id)
+        elif admin_account.admin == igor:
+            await bot.send_message(text=f'Админ аккаунт сменен на igor', chat_id=message.chat.id)
+        else:
+            await bot.send_message(text=f'Ошибка', chat_id=message.chat.id)
+    else:
+        await bot.send_message(text=f'Недостаточно прав', chat_id=message.chat.id,
+                               reply_markup=kb_price)
+
+
 async def post(message: Message, bot, state: FSMContext):
     await state.clear()
     try:
-        if message.chat.id == admin_account:
+        if message.chat.id == admin_account.admin:
             await Buttons(bot, message).rasylka_buttons()
             await state.set_state(Rassylka.post)
 
@@ -116,8 +131,8 @@ async def post(message: Message, bot, state: FSMContext):
 async def next_level_base(message: Message, bot, state: FSMContext):
     await state.clear()
     try:
-        if message.chat.id == admin_account:
-            await bot.send_message(admin_account, 'Введи никнейм клиента без знака @, которого нужно переместить '
+        if message.chat.id == admin_account.admin:
+            await bot.send_message(admin_account.admin, 'Введи никнейм клиента без знака @, которого нужно переместить '
                                                   'в базу данных "старые клиенты"')
             await state.set_state(Next_level_base.nickname)
         else:
@@ -130,7 +145,7 @@ async def next_level_base(message: Message, bot, state: FSMContext):
 async def reset_cash(message: Message, bot, state: FSMContext):
     await state.clear()
     try:
-        if message.chat.id == admin_account:
+        if message.chat.id == admin_account.admin:
             await db.delete_all_users()
             await bot.send_message(message.chat.id, 'Кэш очищен',
                                    message_thread_id=message.message_thread_id)
@@ -145,7 +160,7 @@ async def reset_cash(message: Message, bot, state: FSMContext):
 async def day_visitors(message: Message, bot, state: FSMContext):
     await state.clear()
     try:
-        if message.chat.id == admin_account:
+        if message.chat.id == admin_account.admin:
             data = await db.return_base_data()
             if data is False:
                 await bot.send_message(message.chat.id, 'Сегодня пользователей не было')
@@ -167,7 +182,7 @@ async def day_visitors(message: Message, bot, state: FSMContext):
 
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
     data_from_database = await db.search_in_table(callback.message.chat.id)
-    if callback.message.chat.id != admin_account:
+    if callback.message.chat.id != admin_account.admin:
         if data_from_database is not False:
             if data_from_database[1][0][4] >= 8:
                 return
@@ -185,15 +200,15 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
             elif callback.data == 'page_two':
                 await Buttons(bot, callback.message).marka_buttons(next_button=None, back_button='page_one')
             elif callback.data == 'zayavka_yes':
-                if callback.message.chat.id == admin_account:
-                    await bot.send_message(admin_account, f'не доступно для админа')
+                if callback.message.chat.id == admin_account.admin:
+                    await bot.send_message(admin_account.admin, f'не доступно для админа')
                 elif callback.from_user.username is not None:
                     await bot.edit_message_text(text=f'Заявка оформлена и передана мастеру, с Вами свяжутся в ближайшее время. '
                                                 f'Спасибо, что выбрали нас.🤝\n\n'
                                                 f'Если желаете сообщить что-то дополнительно, отправьте в сообщении 💬\n'
                                                 f'Для нового рассчета воспользуйтесь командой /price',
                                                 chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-                    await bot.send_message(admin_account, f'🚨!!!СРОЧНО!!!🚨\n'
+                    await bot.send_message(admin_account.admin, f'🚨!!!СРОЧНО!!!🚨\n'
                                                     f'Хозяин, поступила ЗАЯВКА от:\n'
                                                     f'Псевдоним: @{callback.from_user.username}\n'
                                                     f'id чата: {callback.message.chat.id}\n'
@@ -209,7 +224,7 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                                       f'сообщение свой номер телефона в любом формате. '
                                                       f'Спасибо, что выбрали нас.🤝\n'
                                                       f'Для нового рассчета воспользуйтесь командой /price')
-                    await bot.send_message(admin_account, f'🚨!!!СРОЧНО!!!🚨\n'
+                    await bot.send_message(admin_account.admin, f'🚨!!!СРОЧНО!!!🚨\n'
                                                     f'Хозяин, поступила ЗАЯВКА от:\n'
                                                     f'Псевдоним: @{callback.from_user.username}\n'
                                                     f'id чата: {callback.message.chat.id}\n'
@@ -241,7 +256,7 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
             elif callback.data.endswith('_class'):
                 mes = await bot.edit_message_text(text=f'загрузка..🚀', chat_id=callback.message.chat.id,
                                                   message_id=callback.message.message_id)
-                if callback.message.chat.id != admin_account:
+                if callback.message.chat.id != admin_account.admin:
                     if data_from_database[1][0][4] >= 6:
                         await bot.edit_message_text(chat_id=callback.message.chat.id,
                                                     text=f'Превышен дневной лимит обращений.',
@@ -262,8 +277,8 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                                                  f'/result - посмотреть на отзывы и результат работ')
                 await bot.edit_message_media(media=media, chat_id=callback.message.chat.id, message_id=mes.message_id)
                 await Buttons(bot, callback.message).zayavka_buttons(data_marka)
-                if callback.message.chat.id != admin_account and data_from_database[1][0][4] < 2:
-                    await bot.send_message(admin_account, f'Хозяин! Замечена активность:\n'
+                if callback.message.chat.id != admin_account.admin and data_from_database[1][0][4] < 2:
+                    await bot.send_message(admin_account.admin, f'Хозяин! Замечена активность:\n'
                                                           f'Имя: {callback.from_user.first_name}\n'
                                                           f'Фамилия: {callback.from_user.last_name}\n'
                                                           f'Никнейм: {callback.from_user.username}\n'
@@ -274,17 +289,17 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                     return
             elif callback.data == 'Общая база клиентов':
                 await bot.edit_message_text(text='База для рассылки: Общая база клиентов\nОтправь мне пост 💬',
-                                            chat_id=admin_account, message_id=callback.message.message_id)
+                                            chat_id=admin_account.admin, message_id=callback.message.message_id)
                 await state.update_data(base=callback.data)
                 await state.set_state(Rassylka.post)
             elif callback.data == 'База потенциальных клиентов':
                 await bot.edit_message_text(text='База для рассылки: ️База потенциальных клиентов\nОтправь мне пост 💬',
-                                            chat_id=admin_account, message_id=callback.message.message_id)
+                                            chat_id=admin_account.admin, message_id=callback.message.message_id)
                 await state.update_data(base=callback.data)
                 await state.set_state(Rassylka.post)
             elif callback.data == 'База старых клиентов':
                 await bot.edit_message_text(text='База для рассылки: ️База старых клиентов\nОтправь мне пост 💬',
-                                            chat_id=admin_account, message_id=callback.message.message_id)
+                                            chat_id=admin_account.admin, message_id=callback.message.message_id)
                 await state.update_data(base=callback.data)
                 await state.set_state(Rassylka.post)
     except Exception as e:

@@ -2,6 +2,21 @@ from aiogram import Bot, Dispatcher, F
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram.filters import Command
 from handlers import *
+from loguru import logger
+
+
+logger.remove()
+# Настраиваем логирование в файл с ограничением количества файлов
+logger.add(
+    "loggs.log",
+    format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}",
+    level="INFO",
+    rotation="5 MB",  # Ротация файла каждые 10 MB
+    retention="10 days",  # Хранить только 5 последних логов
+    compression="zip",  # Сжимать старые логи в архив
+    backtrace=True,     # Сохранение трассировки ошибок
+    diagnose=True       # Подробный вывод
+)
 
 from FSM import *
 from database import *
@@ -19,6 +34,7 @@ dp.message.register(help, Command(commands='help'))
 dp.message.register(price, Command(commands='price'))
 dp.message.register(result, Command(commands='result'))
 dp.message.register(post, Command(commands='post'))
+dp.message.register(tester, Command(commands='test'))
 dp.message.register(sent_message, Command(commands='sent_message'))
 dp.message.register(next_level_base, Command(commands='next_level_base'))
 dp.message.register(day_visitors, Command(commands='day_visitors'))

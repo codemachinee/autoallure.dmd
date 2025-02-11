@@ -6,8 +6,7 @@ from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from passwords import *
-admin_account = igor
-# admin_account = kostya
+from functions import admin_account
 
 kb_price = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text=' AUDI', callback_data='AUDI'),
@@ -22,7 +21,7 @@ kb_price = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text='FORD', callback_data='FORD'),
                 InlineKeyboardButton(text='GAC', callback_data='GAC'),
                 InlineKeyboardButton(text='GEELY', callback_data='GEELY')],
-                [InlineKeyboardButton(text='️HAVAL', callback_data="HAVAl"),
+                [InlineKeyboardButton(text='️HAVAL', callback_data="HAVAL"),
                 InlineKeyboardButton(text='HONDA', callback_data='HONDA'),
                 InlineKeyboardButton(text='HUMMER', callback_data='HUMMER')],
                 [InlineKeyboardButton(text='️HYUNDAI', callback_data='HYUNDAI'),
@@ -114,5 +113,5 @@ class Buttons:
             [InlineKeyboardButton(text='Общая база клиентов', callback_data='Общая база клиентов')],
             [InlineKeyboardButton(text='️База потенциальных клиентов', callback_data="База потенциальных клиентов")],
             [InlineKeyboardButton(text='️База старых клиентов', callback_data="База старых клиентов")]])
-        await self.bot.send_message(text='Выберите базу для отправки рассылки:', chat_id=admin_account,
+        await self.bot.send_message(text='Выберите базу для отправки рассылки:', chat_id=admin_account.admin,
                                          reply_markup=kb_rasylka)

@@ -31,7 +31,7 @@ async def anoter_model_registration(message, state: FSMContext, bot):
     data_marka = data.get('marka')
     await bot.send_message(message.chat.id, 'Cпасибо! Я передал информацию мастеру. Прайс будет выслан Вам '
                                                      'в ближайшее время.')
-    await bot.send_message(admin_account, f'🚨!!!СРОЧНО!!!🚨\n'
+    await bot.send_message(admin_account.admin, f'🚨!!!СРОЧНО!!!🚨\n'
                            f'Хозяин, поступил запрос прайса на отсутствующее в моем списке авто от:\n\n'
                            f'Имя: {message.from_user.first_name}\n'
                            f'Фамилия: {message.from_user.last_name}\n'
@@ -48,8 +48,8 @@ async def anoter_model_registration(message, state: FSMContext, bot):
 
 
 async def message_from_user(message, state: FSMContext, bot):
-    await bot.send_message(admin_account, f'Сообщение от пользователя @{message.from_user.username}:')
-    await bot.copy_message(admin_account, message.chat.id, message.message_id)
+    await bot.send_message(admin_account.admin, f'Сообщение от пользователя @{message.from_user.username}:')
+    await bot.copy_message(admin_account.admin, message.chat.id, message.message_id)
     await bot.send_message(message.chat.id, 'Ваше сообщение отправлено ✅')
     await state.clear()
 
@@ -57,18 +57,18 @@ async def message_from_user(message, state: FSMContext, bot):
 async def message_from_admin_chat(message, state: FSMContext, bot):
     if str.isdigit(message.text) is True:
         await state.update_data(user_id=message.text)
-        await bot.send_message(admin_account, 'Введите сообщение')
+        await bot.send_message(admin_account.admin, 'Введите сообщение')
         await state.set_state(Message_from_admin.message)
     else:
-        await bot.send_message(admin_account, 'Неверные данные... Повтори попытку используя цифры (Например: 1338281106)')
+        await bot.send_message(admin_account.admin, 'Неверные данные... Повтори попытку используя цифры (Например: 1338281106)')
         await state.set_state(Message_from_admin.user_id)
 
 
 async def message_from_admin_text(message, state: FSMContext, bot):
     data = await state.get_data()
     user_id = data.get('user_id')
-    await bot.copy_message(user_id, admin_account, message.message_id)
-    await bot.send_message(admin_account, 'Ваше сообщение отправлено ✅')
+    await bot.copy_message(user_id, admin_account.admin, message.message_id)
+    await bot.send_message(admin_account.admin, 'Ваше сообщение отправлено ✅')
     await state.clear()
 
 
