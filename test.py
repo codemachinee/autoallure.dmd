@@ -5,18 +5,22 @@ from passwords import *
 
 class Admin_acc:
     def __init__(self):
-        self.admin = kostya
+        self.__admin = kostya
 
     async def get_admin(self):
-        return self.admin
+        return self.__admin
 
     async def set_admin(self, value):
-        self.admin = value
+        self.__admin = value
 
 
 admin_class = Admin_acc()
-admin_account = admin_class.admin
 
-asyncio.run(admin_class.set_admin("test"))
-print(admin_account)
-print(admin_class.admin)
+
+async def main():
+    print(await admin_class.get_admin())  # Выведет "kostya"
+    await admin_class.set_admin("igor")  # Меняем значение
+    print(await admin_class.get_admin())  # Выведет "igor"
+
+
+asyncio.run(main())
