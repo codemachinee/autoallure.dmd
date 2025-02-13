@@ -64,6 +64,7 @@ async def main():
     await db.chek_tables()
     scheduler = AsyncIOScheduler()
     scheduler.add_job(db.delete_all_users, "cron", day_of_week='mon-sun', hour=00)
+    scheduler.start()
     await dp.start_polling(bot)
 
 if __name__ == '__main__':
