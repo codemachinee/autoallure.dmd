@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime
 
 import gspread
+from gspread.exceptions import APIError
 from loguru import logger
 
 from passwords import *
@@ -14,14 +15,30 @@ class clients_base:  # класс базы данных
         self.bot = bot
         self.message = message
         self.auto_model = auto_model
-        gc = gspread.service_account(filename='base_key.json')  # доступ к гугл табл по ключевому файлу аккаунта разраба
-        # открытие таблицы по юрл адресу:
-        sh = gc.open('autoallure_dmd')
-        self.worksheet = sh.worksheet('общая база клиентов')  # выбор листа 'общая база клиентов' таблицы
-        self.worksheet2 = sh.worksheet('потенциальные клиенты')
-        self.worksheet3 = sh.worksheet('старые клиенты')
+        self.worksheet = None
+        self.worksheet2 = None
+        self.worksheet3 = None
+
+    async def connect_to_google(self):
+        for attempt in range(5):
+            try:
+                gc = gspread.service_account(filename='base_key.json')  # доступ к гугл табл по ключевому файлу аккаунта разраба
+                # открытие таблицы по юрл адресу:
+                sh = gc.open('autoallure_dmd')
+                self.worksheet = sh.worksheet('общая база клиентов')  # выбор листа 'общая база клиентов' таблицы
+                self.worksheet2 = sh.worksheet('потенциальные клиенты')
+                self.worksheet3 = sh.worksheet('старые клиенты')
+                return
+            except APIError as e:
+                if e.response.status_code == 503:  # Если сервис временно недоступен
+                    print(f"Google API недоступен, попытка {attempt + 1}/{5}...")
+                    await asyncio.sleep(2)  # Ждем перед новой попыткой
+                else:
+                    raise  # Если другая ошибка, выбрасываем
+        raise RuntimeError("Не удалось подключиться к Google Sheets после нескольких попыток.")
 
     async def chec_and_record(self):  # функция поиска и записи в базу
+        await self.connect_to_google()
         try:
             worksheet_len = len(self.worksheet.col_values(1)) + 1  # поиск первой свободной ячейки для записи во 2 столбце
             worksheet_len2 = len(self.worksheet2.col_values(1)) + 1
@@ -34,12 +51,12 @@ class clients_base:  # класс базы данных
                                             f'База: https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_'
                                             f'oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit#gid=0')
                 self.worksheet.update(f'A{worksheet_len}:F{worksheet_len}',
-                                      [[self.message.chat.id, self.message.from_user.username,
-                                        self.message.from_user.first_name, self.message.from_user.last_name,
+                                      [[self.message.chat.id, self.message.chat.username,
+                                        self.message.chat.first_name, self.message.chat.last_name,
                                         self.auto_model, str(datetime.now().date())]])
                 self.worksheet2.update(f'A{worksheet_len2}:F{worksheet_len2}',
-                                      [[self.message.chat.id, self.message.from_user.username,
-                                      self.message.from_user.first_name, self.message.from_user.last_name,
+                                      [[self.message.chat.id, self.message.chat.username,
+                                      self.message.chat.first_name, self.message.chat.last_name,
                                      self.auto_model, str(datetime.now().date())]])
         except Exception as e:
             logger.exception('Ошибка в functions/chec_and_record', e)
@@ -47,6 +64,7 @@ class clients_base:  # класс базы данных
 
     async def perevod_v_bazu(self, nickname):  # функция перевода из базы потенциальных клиентов в базу старых клиентов
         mess = await self.bot.send_message(admin_account.admin, f'загрузка..🚀')
+        await self.connect_to_google()
         try:
             worksheet_len3 = len(self.worksheet3.col_values(1)) + 1
             cell = self.worksheet2.find(nickname)  # поиск ячейки с данными по ключевому слову
@@ -63,6 +81,7 @@ class clients_base:  # класс базы данных
 
     async def rasylka_v_bazu(self, base):  # функция рассылки постов в базы
         mess = await self.bot.send_message(admin_account.admin, f'загрузка..🚀')
+        await self.connect_to_google()
         try:
             if base == 'Общая база клиентов':
                 for i in range(1, len(self.worksheet.col_values(1))):

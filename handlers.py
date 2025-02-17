@@ -191,6 +191,8 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
         else:
             await db.add_user(update_telegram_id=callback.message.chat.id, update_username=callback.from_user.username,
                               update_name=callback.from_user.first_name, update_dates=datetime.now())
+            data_from_database = [True, [[callback.message.chat.id, callback.from_user.username, callback.from_user.first_name,
+                                          datetime.now(), 1]]]
     try:
         async with aiofiles.open('price.json', "r", encoding="utf-8") as file:
             content = await file.read()
