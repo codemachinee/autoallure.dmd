@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, F
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler  # type: ignore
 from aiogram.filters import Command
 from handlers import *
 from loguru import logger
@@ -74,4 +74,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         asyncio.run(db.close())
         logger.exception('выключение бота')
-        bot.send_message(loggs_acc, f'выключение бота')
+        asyncio.run(bot.send_message(loggs_acc, f'выключение бота'))

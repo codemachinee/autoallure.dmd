@@ -183,6 +183,8 @@ async def day_visitors(message: Message, bot, state: FSMContext):
 
 
 async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
+    assert callback.message is not None   # обозначаем для проверочной библиотеки mypy, чтобы избегать лишних ошибок при тесте
+    assert callback.data is not None
     data_from_database = await db.search_in_table(callback.message.chat.id)
     if callback.message.chat.id != admin_account.admin:
         if data_from_database is not False:
