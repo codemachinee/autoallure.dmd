@@ -1,5 +1,6 @@
 from datetime import datetime
-
+import pytz
+moscow_tz = pytz.timezone("Europe/Moscow")
 from aiogram.types import CallbackQuery, Message, FSInputFile, ReplyKeyboardRemove, InputMediaPhoto
 from loguru import logger
 
@@ -191,10 +192,10 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
             if data_from_database[1][0][4] >= 8:
                 return
             else:
-                await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now())
+                await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(moscow_tz))
         else:
             await db.add_user(update_telegram_id=callback.message.chat.id, update_username=callback.from_user.username,
-                              update_name=callback.from_user.first_name, update_dates=datetime.now())
+                              update_name=callback.from_user.first_name, update_dates=datetime.now(moscow_tz))
             data_from_database = [True, [[callback.message.chat.id, callback.from_user.username, callback.from_user.first_name,
                                           datetime.now(), 1]]]
     try:
@@ -267,11 +268,11 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                         await bot.edit_message_text(chat_id=callback.message.chat.id,
                                                     text=f'Превышен дневной лимит обращений.',
                                                     message_id=callback.message.message_id)
-                        await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
+                        await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(moscow_tz),
                                               update_number_of_requests=data_from_database[1][0][4] + 1)
                         return
                     else:
-                        await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(),
+                        await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(moscow_tz),
                                               update_number_of_requests=data_from_database[1][0][4] + 1)
                 data = await state.get_data()
                 data_marka = data.get('marka')
