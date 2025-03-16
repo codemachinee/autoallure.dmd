@@ -4,6 +4,7 @@ import json
 import aiofiles
 from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from loguru import logger
 
 from passwords import *
 from functions import admin_account
@@ -63,43 +64,54 @@ class Buttons:
         self.bot = bot
         self.message = message
 
-    async def marka_buttons(self, next_button=None, back_button=None):
-        if back_button is None and next_button is not None:
-            kb_marks = kb_price
-        elif back_button is not None and next_button is None:
-            kb_marks = kb_price_two
-        await self.bot.edit_message_reply_markup(chat_id=self.message.chat.id, message_id=self.message.message_id,
-                                                 reply_markup=kb_marks)
+    async def marka_buttons(self, next_button=None, back_button=None, kb_marks=None):
+        try:
+            if back_button is None and next_button is not None:
+                kb_marks = kb_price
+            elif back_button is not None and next_button is None:
+                kb_marks = kb_price_two
+            if self.message.reply_markup == kb_marks or kb_marks is None:
+                pass
+            else:
+                await self.bot.edit_message_reply_markup(chat_id=self.message.chat.id, message_id=self.message.message_id,
+                                                         reply_markup=kb_marks)
+        except Exception as e:
+            logger.exception('Ошибка в keyboards/marka_buttons', e)
+            await self.bot.send_message(loggs_acc, f'Ошибка в keyboards/marka_buttons: {e}')
 
     async def models_buttons(self, marka):
         keyboard_list = []
-        async with aiofiles.open('price.json', "r", encoding="utf-8") as file:
-            content = await file.read()
-            data = json.loads(content)
-            keys_list = list(data.keys())
-            data = data[marka]
-            for i in data:
-                if i is None:
-                    pass
-                elif len(', '.join(i)) <= 41:
-                    keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i),
-                                                                     callback_data=f"{data.index(i) + 1}_class")])
+        try:
+            async with aiofiles.open('price.json', "r", encoding="utf-8") as file:
+                content = await file.read()
+                data = json.loads(content)
+                keys_list = list(data.keys())
+                data = data[marka]
+                for i in data:
+                    if i is None:
+                        pass
+                    elif len(', '.join(i)) <= 41:
+                        keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i),
+                                                                         callback_data=f"{data.index(i) + 1}_class")])
+                    else:
+                        keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i[:len(i)//2]),
+                                                                         callback_data=f"{data.index(i) + 1}_class")])
+                        keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i[len(i)//2:]),
+                                                                         callback_data=f"{data.index(i) + 1}_class")])
+                another_button = types.InlineKeyboardButton(text="🚫Отсутствует в списке", callback_data=f'another_{marka}')
+                if keys_list.index(marka) < 21:
+                    back_value_button = types.InlineKeyboardButton(text="↩️ Вернуться", callback_data='price_menu')
                 else:
-                    keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i[:len(i)//2]),
-                                                                     callback_data=f"{data.index(i) + 1}_class")])
-                    keyboard_list.append([types.InlineKeyboardButton(text=', '.join(i[len(i)//2:]),
-                                                                     callback_data=f"{data.index(i) + 1}_class")])
-            another_button = types.InlineKeyboardButton(text="🚫Отсутствует в списке", callback_data=f'another_{marka}')
-            if keys_list.index(marka) < 21:
-                back_value_button = types.InlineKeyboardButton(text="↩️ Вернуться", callback_data='price_menu')
-            else:
-                back_value_button = types.InlineKeyboardButton(text="↩️ Вернуться", callback_data='price_menu_two')
-            keyboard_list.append([another_button])
-            keyboard_list.append([back_value_button])
-            kb_models_buttons = types.InlineKeyboardMarkup(inline_keyboard=keyboard_list)
-            await self.bot.edit_message_text(chat_id=self.message.chat.id, text=f'Пожалуйста выберите модель Вашего '
-                                                                                f'автомобиля 🚙:',
-                                             message_id=self.message.message_id, reply_markup=kb_models_buttons)
+                    back_value_button = types.InlineKeyboardButton(text="↩️ Вернуться", callback_data='price_menu_two')
+                keyboard_list.append([another_button])
+                keyboard_list.append([back_value_button])
+                kb_models_buttons = types.InlineKeyboardMarkup(inline_keyboard=keyboard_list)
+                await self.bot.edit_message_text(chat_id=self.message.chat.id, text=f'Пожалуйста выберите модель Вашего '
+                                                                                    f'автомобиля 🚙:',
+                                                 message_id=self.message.message_id, reply_markup=kb_models_buttons)
+        except Exception as e:
+            logger.exception('Ошибка в keyboards/models_buttons', e)
+            await self.bot.send_message(loggs_acc, f'Ошибка в keyboards/models_buttons: {e}')
 
     async def zayavka_buttons(self, marka):
         kb_zayavka = InlineKeyboardMarkup(inline_keyboard=[

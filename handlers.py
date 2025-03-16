@@ -245,13 +245,19 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                 await state.update_data(marka=callback.data)
                 await Buttons(bot, callback.message).models_buttons(callback.data)
             elif callback.data == 'price_menu':
-                await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
-                                                                                   f'автомобиля 🚐:',
-                                            message_id=callback.message.message_id, reply_markup=kb_price)
+                if callback.message.reply_markup == kb_price:
+                    pass
+                else:
+                    await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
+                                                                                       f'автомобиля 🚐:',
+                                                message_id=callback.message.message_id, reply_markup=kb_price)
             elif callback.data == 'price_menu_two':
-                await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
-                                                                                   f'автомобиля 🚐:',
-                                            message_id=callback.message.message_id, reply_markup=kb_price_two)
+                if callback.message.reply_markup == kb_price_two:
+                    pass
+                else:
+                    await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
+                                                                                       f'автомобиля 🚐:',
+                                                message_id=callback.message.message_id, reply_markup=kb_price_two)
             elif callback.data.startswith('another_'):
                 kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="↩️ Вернуться",
                                                                                  callback_data=callback.data[8:])]])
@@ -315,13 +321,17 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
 
 
 async def check_message(message: Message, bot, state: FSMContext):
-    if message.text:
-        kb2 = ReplyKeyboardRemove()  # удаление клавиатуры
-        await state.clear()
-        mess = await bot.send_message(text=f'🏎', chat_id=message.chat.id,
-                                      reply_markup=kb2)
-        await bot.delete_message(chat_id=message.chat.id, message_id=mess.message_id)
-        await bot.send_message(text='Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
-                               reply_markup=kb_price)
+    try:
+        if message.text:
+            kb2 = ReplyKeyboardRemove()  # удаление клавиатуры
+            await state.clear()
+            mess = await bot.send_message(text=f'🏎', chat_id=message.chat.id,
+                                          reply_markup=kb2)
+            await bot.delete_message(chat_id=message.chat.id, message_id=mess.message_id)
+            await bot.send_message(text='Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
+                                   reply_markup=kb_price)
+    except Exception as e:
+        logger.exception('Ошибка в handlers/check_message', e)
+        await bot.send_message(loggs_acc, f'Ошибка в handlers/check_message: {e}')
 
 
