@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, F
-from apscheduler.schedulers.asyncio import AsyncIOScheduler  # type: ignore
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram.filters import Command
 from handlers import *
 from loguru import logger
@@ -63,7 +63,7 @@ dp.message.register(check_message, F.text)
 async def main():
     await db.chek_tables()
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(db.delete_all_users, "cron", day_of_week='mon-sun', hour=00)
+    scheduler.add_job(db.delete_all_users, "cron", day_of_week='mon-sun', hour=00, misfire_grace_time=300)
     scheduler.start()
     await dp.start_polling(bot)
 

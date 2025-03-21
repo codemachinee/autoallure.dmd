@@ -1,0 +1,28 @@
+name: Deploy autoallure.dmd bot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: клонирование репозитория в среду выполнения
+        uses: actions/checkout@v3
+
+      - name: Вход на сервер по SSH и деплой
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            cd /root/autoallure.dmd
+            git pull origin main
+            docker rm -f autoallure_bot || true
+            docker rmi -f autoallure_bot || true
+            docker build -t autoallure_bot .
+            docker run -d --name autoallure_bot -v /root/autoallure.dmd:/app autoallure_bot
