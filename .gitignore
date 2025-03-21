@@ -6,3 +6,7 @@ users.db-shm
 users.db-wal
 venv
 autoallure.dmd/
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/

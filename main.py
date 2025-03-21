@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, F
+from aiogram.types import BotCommand
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram.filters import Command
 from handlers import *
@@ -60,8 +61,19 @@ dp.message.register(next_level, Next_level_base.nickname)
 dp.message.register(check_message, F.text)
 
 
+async def set_commands():
+    commands = [
+        BotCommand(command="start", description="запуск/перезапуск бота"),
+        BotCommand(command="help", description="справка по боту"),
+        BotCommand(command="price", description="расчет цены на услуги"),
+        BotCommand(command="result", description="галерея с работами")
+    ]
+    await bot.set_my_commands(commands)
+
+
 async def main():
     await db.chek_tables()
+    await set_commands()
     scheduler = AsyncIOScheduler()
     scheduler.add_job(db.delete_all_users, "cron", day_of_week='mon-sun', hour=00, misfire_grace_time=300)
     scheduler.start()
