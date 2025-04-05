@@ -23,6 +23,7 @@ from handlers import (
     check_callbacks,
     check_message,
     day_visitors,
+    help,
     next_level_base,
     post,
     price,
