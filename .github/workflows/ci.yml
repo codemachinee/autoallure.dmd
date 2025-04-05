@@ -50,13 +50,13 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            # Входим в GHCR
+#           Входим в GHCR
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-            # Останавливаем и удаляем старый контейнер, если он есть
+#           Останавливаем и удаляем старый контейнер, если он есть
             docker rm -f autoallure_bot || true
-           # Полная очистка кэша, образов и ненужных данных
+#           Полная очистка кэша, образов и ненужных данных
             docker system prune -af --volumes
-           # Запускаем контейнер
+#           Запускаем контейнер
             docker run --pull=always -d \
             --name autoallure_bot \
             -v /root/autoallure.dmd/passwords.py:/app/passwords.py \
