@@ -4,9 +4,10 @@ loggs.log
 users.db
 users.db-shm
 users.db-wal
-venv
+.venv
 autoallure.dmd/
 __pycache__/
 *.py[cod]
 *$py.class
 .mypy_cache/
+.idea/

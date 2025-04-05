@@ -1,13 +1,12 @@
-import asyncio
 import json
 
 import aiofiles
 from aiogram import types
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from loguru import logger
 
-from passwords import *
 from functions import admin_account
+from passwords import loggs_acc
 
 kb_price = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text=' AUDI', callback_data='AUDI'),
@@ -106,8 +105,8 @@ class Buttons:
                 keyboard_list.append([another_button])
                 keyboard_list.append([back_value_button])
                 kb_models_buttons = types.InlineKeyboardMarkup(inline_keyboard=keyboard_list)
-                await self.bot.edit_message_text(chat_id=self.message.chat.id, text=f'Пожалуйста выберите модель Вашего '
-                                                                                    f'автомобиля 🚙:',
+                await self.bot.edit_message_text(chat_id=self.message.chat.id, text='Пожалуйста выберите модель Вашего '
+                                                                                    'автомобиля 🚙:',
                                                  message_id=self.message.message_id, reply_markup=kb_models_buttons)
         except Exception as e:
             logger.exception('Ошибка в keyboards/models_buttons', e)
@@ -117,7 +116,7 @@ class Buttons:
         kb_zayavka = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text='✅ Да, оставить завку!', callback_data='zayavka_yes'),
              InlineKeyboardButton(text='️↩️ Вернуться', callback_data=marka)]])
-        await self.bot.send_message(self.message.chat.id, f'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?\n',
+        await self.bot.send_message(self.message.chat.id, 'Хотите оставить заявку на интересующую(-ие) Вас услугу(-и)?\n',
                                     reply_markup=kb_zayavka)
 
     async def rasylka_buttons(self):

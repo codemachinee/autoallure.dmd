@@ -5,13 +5,43 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read         # Разрешения на доступ к коду репозитория
+  packages: write        # Разрешения на загрузку пакетов
+  id-token: write        # Разрешения для работы с токенами
+  actions: read          # Разрешения для работы с действиями
+
 jobs:
+  build_and_push_in_GHCR:
+    runs-on: ubuntu-latest
+#    needs: test
+
+    steps:
+      - name: Checkout репозиторий
+        uses: actions/checkout@v4
+
+      - name: Вход в GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Сборка Docker образа
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/autoallure_bot:latest .
+
+      - name: Push Docker образ в GHCR
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/autoallure_bot:latest
+
   deploy:
     runs-on: ubuntu-latest
+    needs: build_and_push_in_GHCR
 
     steps:
       - name: клонирование репозитория в среду выполнения
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Вход на сервер по SSH и деплой
         uses: appleboy/ssh-action@master
@@ -20,9 +50,19 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            cd /root/autoallure.dmd
-            git pull origin main
+            # Входим в GHCR
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            # Останавливаем и удаляем старый контейнер, если он есть
             docker rm -f autoallure_bot || true
-            docker rmi -f autoallure_bot || true
-            docker build -t autoallure_bot .
-            docker run -d --name autoallure_bot -v /root/autoallure.dmd:/app autoallure_bot
+           # Полная очистка кэша, образов и ненужных данных
+            docker system prune -af --volumes
+           # Запускаем контейнер
+            docker run --pull=always -d \
+            --name autoallure_bot \
+            -v /root/autoallure.dmd/passwords.py:/app/passwords.py \
+            -v /root/autoallure.dmd/base_key.json:/app/base_key.json \
+            -v /root/autoallure.dmd/loggs.log:/app/loggs.log \
+            -v /root/autoallure.dmd/users.db:/app/users.db \
+            -v /root/autoallure.dmd/users.db-shm:/app/users.db-shm \
+            -v /root/autoallure.dmd/users.db-wal:/app/users.db-wal \
+            ghcr.io/${{ github.repository_owner }}/autoallure_bot:latest

@@ -48,8 +48,8 @@ class Database:
         conn = await self.connect()
         try:
             await conn.execute(
-                f"INSERT INTO users (telegram_id, username, name, dates, number_of_requests) "
-                f"VALUES (?, ?, ?, ?, ?);",
+                "INSERT INTO users (telegram_id, username, name, dates, number_of_requests) "
+                "VALUES (?, ?, ?, ?, ?);",
                 (update_telegram_id, update_username, update_name, update_dates, 1),
             )
             await conn.commit()

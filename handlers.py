@@ -1,27 +1,39 @@
+import json
 from datetime import datetime
+
+import aiofiles
 import pytz
-moscow_tz = pytz.timezone("Europe/Moscow")
-from aiogram.types import CallbackQuery, Message, FSInputFile, ReplyKeyboardRemove, InputMediaPhoto
+from aiogram.fsm.context import FSMContext
+from aiogram.types import (
+    CallbackQuery,
+    FSInputFile,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    InputMediaPhoto,
+    Message,
+    ReplyKeyboardRemove,
+)
 from loguru import logger
 
-from keyboards import *
-from passwords import *
-from FSM import *
-from functions import admin_account
 from database import db
+from FSM import Another_model, Message_from_admin, Next_level_base, Rassylka
+from functions import admin_account, clients_base
+from keyboards import Buttons, kb_price, kb_price_two
+from passwords import igor, kostya, loggs_acc
 
+moscow_tz = pytz.timezone("Europe/Moscow")
 
 async def start(message: Message, bot, state: FSMContext):
     await state.clear()
     try:
         if message.chat.id == admin_account.admin:
             start_file = FSInputFile(r'start_logo.png', 'rb')
-            await bot.send_photo(message.chat.id, start_file, caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
-                                                                      f'надежный сервис и помощник по уходу за Вашим '
-                                                                      f'автомобилем.🚘\n\n'
-                                                                      f'/price - расчет цены на услуги autoallure для '
-                                                                      f'Вашего авто\n/help - все возможности бота\n\n'
-                                                                      f'режим: Администратор')
+            await bot.send_photo(message.chat.id, start_file, caption='Здравствуйте! Вас приветствует autoallure.dmd_bot - '
+                                                                      'надежный сервис и помощник по уходу за Вашим '
+                                                                      'автомобилем.🚘\n\n'
+                                                                      '/price - расчет цены на услуги autoallure для '
+                                                                      'Вашего авто\n/help - все возможности бота\n\n'
+                                                                      'режим: Администратор')
 
         else:
             data_from_database = await db.search_in_table(message.chat.id)
@@ -30,12 +42,12 @@ async def start(message: Message, bot, state: FSMContext):
             else:
                 start_file = FSInputFile(r'start_logo.png', 'rb')
                 await bot.send_photo(message.chat.id, start_file,
-                                     caption=f'Здравствуйте! Вас приветствует autoallure.dmd_bot - '
-                                             f'надежный сервис и помощник по уходу за Вашим '
-                                             f'автомобилем.🚘\n\n'
-                                             f'/price - расчет цены на услуги autoallure для '
-                                             f'Вашего авто\n/help - все возможности бота\n\n'
-                                             f'@hlapps - разработка ботов любой сложности')
+                                     caption='Здравствуйте! Вас приветствует autoallure.dmd_bot - '
+                                             'надежный сервис и помощник по уходу за Вашим '
+                                             'автомобилем.🚘\n\n'
+                                             '/price - расчет цены на услуги autoallure для '
+                                             'Вашего авто\n/help - все возможности бота\n\n'
+                                             '@hlapps - разработка ботов любой сложности')
     except Exception as e:
         logger.exception('Ошибка в handlers/start', e)
         await bot.send_message(loggs_acc, f'Ошибка в handlers/start: {e}')
@@ -44,29 +56,29 @@ async def start(message: Message, bot, state: FSMContext):
 async def help(message: Message, bot, state: FSMContext):
     await state.clear()
     if message.chat.id == admin_account.admin:      # условия демонстрации различных команд для админа и клиентов
-        await bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
-                                                     f'/price -  расчет услуг для любого авто\n'
-                                                     f'/start - инициализация бота\n'
-                                                     f'/help - справка по боту\n'
-                                                     f'/post - устроить рассылку\n'
-                                                     f'/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
-                                                     f'"старые клиенты"\n'
-                                                     f'/sent_message -  отправка через бота сообщения клиенту по id чата\n'
-                                                     f'/result - посмотреть на отзывы и галерею с результатом работ\n'
-                                                     f'/day_visitors - пользователи посетившие бота сегодня\n'
-                                                     f'/reset_cash - сбросить кэш базы данных')
+        await bot.send_message(message.chat.id, 'Основные команды поддерживаемые ботом:\n'
+                                                     '/price -  расчет услуг для любого авто\n'
+                                                     '/start - инициализация бота\n'
+                                                     '/help - справка по боту\n'
+                                                     '/post - устроить рассылку\n'
+                                                     '/next_level_base - перевод клиента из базы "потенциальные клиенты" в базу '
+                                                     '"старые клиенты"\n'
+                                                     '/sent_message -  отправка через бота сообщения клиенту по id чата\n'
+                                                     '/result - посмотреть на отзывы и галерею с результатом работ\n'
+                                                     '/day_visitors - пользователи посетившие бота сегодня\n'
+                                                     '/reset_cash - сбросить кэш базы данных')
 
     else:
         data_from_database = await db.search_in_table(message.chat.id)
         if data_from_database is not False and data_from_database[1][0][4] >= 8:
             pass
         else:
-            await bot.send_message(message.chat.id, f'Основные команды поддерживаемые ботом:\n'
-                                                         f'/price -  расчет услуг для любого авто\n'
-                                                         f'/start - инициализация бота\n'
-                                                         f'/help - справка по боту\n'
-                                                         f'/result - посмотреть на отзывы и галерею с результатом работ\n\n\n'
-                                                    f'@hlapps - разработка ботов любой сложности')
+            await bot.send_message(message.chat.id, 'Основные команды поддерживаемые ботом:\n'
+                                                         '/price -  расчет услуг для любого авто\n'
+                                                         '/start - инициализация бота\n'
+                                                         '/help - справка по боту\n'
+                                                         '/result - посмотреть на отзывы и галерею с результатом работ\n\n\n'
+                                                    '@hlapps - разработка ботов любой сложности')
 
 
 async def result(message: Message, bot, state: FSMContext):
@@ -98,7 +110,7 @@ async def price(message: Message, bot, state: FSMContext):
     if data_from_database is not False and data_from_database[1][0][4] >= 8:
         pass
     else:
-        await bot.send_message(text=f'Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
+        await bot.send_message(text='Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,
                                reply_markup=kb_price)
 
 
@@ -107,13 +119,13 @@ async def tester(message: Message, bot, state: FSMContext):
     if message.chat.id == igor:
         await admin_account.set_admin()
         if admin_account.admin == kostya:
-            await bot.send_message(text=f'Админ аккаунт сменен на kostya', chat_id=message.chat.id)
+            await bot.send_message(text='Админ аккаунт сменен на kostya', chat_id=message.chat.id)
         elif admin_account.admin == igor:
-            await bot.send_message(text=f'Админ аккаунт сменен на igor', chat_id=message.chat.id)
+            await bot.send_message(text='Админ аккаунт сменен на igor', chat_id=message.chat.id)
         else:
-            await bot.send_message(text=f'Ошибка', chat_id=message.chat.id)
+            await bot.send_message(text='Ошибка', chat_id=message.chat.id)
     else:
-        await bot.send_message(text=f'Недостаточно прав', chat_id=message.chat.id,
+        await bot.send_message(text='Недостаточно прав', chat_id=message.chat.id,
                                reply_markup=kb_price)
 
 
@@ -208,12 +220,12 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                 await Buttons(bot, callback.message).marka_buttons(next_button=None, back_button='page_one')
             elif callback.data == 'zayavka_yes':
                 if callback.message.chat.id == admin_account.admin:
-                    await bot.send_message(admin_account.admin, f'не доступно для админа')
+                    await bot.send_message(admin_account.admin, 'не доступно для админа')
                 elif callback.from_user.username is not None:
-                    await bot.edit_message_text(text=f'Заявка оформлена и передана мастеру, с Вами свяжутся в ближайшее время. '
-                                                f'Спасибо, что выбрали нас.🤝\n\n'
-                                                f'Если желаете сообщить что-то дополнительно, отправьте в сообщении 💬\n'
-                                                f'Для нового расчета воспользуйтесь командой /price',
+                    await bot.edit_message_text(text='Заявка оформлена и передана мастеру, с Вами свяжутся в ближайшее время. '
+                                                'Спасибо, что выбрали нас.🤝\n\n'
+                                                'Если желаете сообщить что-то дополнительно, отправьте в сообщении 💬\n'
+                                                'Для нового расчета воспользуйтесь командой /price',
                                                 chat_id=callback.message.chat.id, message_id=callback.message.message_id)
                     await bot.send_message(admin_account.admin, f'🚨!!!СРОЧНО!!!🚨\n'
                                                     f'Хозяин, поступила ЗАЯВКА от:\n'
@@ -226,11 +238,11 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                                                     f'/next_level_base\n'
                                                     f'/sent_message - отправить сообщение с помощью бота')
                 else:
-                    await bot.send_message(callback.message.chat.id, f'Заявка оформлена и передана мастеру, пожалуйста перейдите в чат '
-                                                      f'@pogonin21 и напишите любое сообщение или отправьте в ответ на это '
-                                                      f'сообщение свой номер телефона в любом формате. '
-                                                      f'Спасибо, что выбрали нас.🤝\n'
-                                                      f'Для нового расчета воспользуйтесь командой /price')
+                    await bot.send_message(callback.message.chat.id, 'Заявка оформлена и передана мастеру, пожалуйста перейдите в чат '
+                                                      '@pogonin21 и напишите любое сообщение или отправьте в ответ на это '
+                                                      'сообщение свой номер телефона в любом формате. '
+                                                      'Спасибо, что выбрали нас.🤝\n'
+                                                      'Для нового расчета воспользуйтесь командой /price')
                     await bot.send_message(admin_account.admin, f'🚨!!!СРОЧНО!!!🚨\n'
                                                     f'Хозяин, поступила ЗАЯВКА от:\n'
                                                     f'Псевдоним: @{callback.from_user.username}\n'
@@ -248,31 +260,31 @@ async def check_callbacks(callback: CallbackQuery, bot, state: FSMContext):
                 if callback.message.reply_markup == kb_price:
                     pass
                 else:
-                    await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
-                                                                                       f'автомобиля 🚐:',
+                    await bot.edit_message_text(chat_id=callback.message.chat.id, text='Пожалуйста выберите марку Вашего '
+                                                                                       'автомобиля 🚐:',
                                                 message_id=callback.message.message_id, reply_markup=kb_price)
             elif callback.data == 'price_menu_two':
                 if callback.message.reply_markup == kb_price_two:
                     pass
                 else:
-                    await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста выберите марку Вашего '
-                                                                                       f'автомобиля 🚐:',
+                    await bot.edit_message_text(chat_id=callback.message.chat.id, text='Пожалуйста выберите марку Вашего '
+                                                                                       'автомобиля 🚐:',
                                                 message_id=callback.message.message_id, reply_markup=kb_price_two)
             elif callback.data.startswith('another_'):
                 kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="↩️ Вернуться",
                                                                                  callback_data=callback.data[8:])]])
                 await state.update_data(marka=callback.data[8:])
-                await bot.edit_message_text(chat_id=callback.message.chat.id, text=f'Пожалуйста введите марку Вашего '
-                                                                                   f'автомобиля ⌨️:',
+                await bot.edit_message_text(chat_id=callback.message.chat.id, text='Пожалуйста введите марку Вашего '
+                                                                                   'автомобиля ⌨️:',
                                             message_id=callback.message.message_id, reply_markup=kb)
                 await state.set_state(Another_model.model)
             elif callback.data.endswith('_class'):
-                mes = await bot.edit_message_text(text=f'загрузка..🚀', chat_id=callback.message.chat.id,
+                mes = await bot.edit_message_text(text='загрузка..🚀', chat_id=callback.message.chat.id,
                                                   message_id=callback.message.message_id)
                 if callback.message.chat.id != admin_account.admin:
                     if data_from_database[1][0][4] >= 6:
                         await bot.edit_message_text(chat_id=callback.message.chat.id,
-                                                    text=f'Превышен дневной лимит обращений.',
+                                                    text='Превышен дневной лимит обращений.',
                                                     message_id=callback.message.message_id)
                         await db.update_table(telegram_id=callback.message.chat.id, update_dates=datetime.now(moscow_tz),
                                               update_number_of_requests=data_from_database[1][0][4] + 1)
@@ -325,7 +337,7 @@ async def check_message(message: Message, bot, state: FSMContext):
         if message.text:
             kb2 = ReplyKeyboardRemove()  # удаление клавиатуры
             await state.clear()
-            mess = await bot.send_message(text=f'🏎', chat_id=message.chat.id,
+            mess = await bot.send_message(text='🏎', chat_id=message.chat.id,
                                           reply_markup=kb2)
             await bot.delete_message(chat_id=message.chat.id, message_id=mess.message_id)
             await bot.send_message(text='Пожалуйста выберите марку Вашего автомобиля 🏎:', chat_id=message.chat.id,

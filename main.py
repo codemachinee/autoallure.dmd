@@ -1,10 +1,38 @@
+import asyncio
+
 from aiogram import Bot, Dispatcher, F
+from aiogram.filters import Command
 from aiogram.types import BotCommand
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from aiogram.filters import Command
-from handlers import *
 from loguru import logger
 
+from database import db
+from FSM import (
+    Another_model,
+    Message_from_admin,
+    Next_level_base,
+    Rassylka,
+    anoter_model_registration,
+    message_from_admin_chat,
+    message_from_admin_text,
+    message_from_user,
+    next_level,
+    rassylka,
+)
+from handlers import (
+    check_callbacks,
+    check_message,
+    day_visitors,
+    next_level_base,
+    post,
+    price,
+    reset_cash,
+    result,
+    sent_message,
+    start,
+    tester,
+)
+from passwords import autoallure, loggs_acc
 
 logger.remove()
 # Настраиваем логирование в файл с ограничением количества файлов
@@ -18,10 +46,6 @@ logger.add(
     backtrace=True,     # Сохранение трассировки ошибок
     diagnose=True       # Подробный вывод
 )
-
-from FSM import *
-from database import *
-
 
 token = autoallure
 # token = codemashine_test
@@ -86,4 +110,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         asyncio.run(db.close())
         logger.exception('выключение бота')
-        asyncio.run(bot.send_message(loggs_acc, f'выключение бота'))
+        asyncio.run(bot.send_message(loggs_acc, 'выключение бота'))

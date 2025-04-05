@@ -5,7 +5,8 @@ import gspread
 from gspread.exceptions import APIError
 from loguru import logger
 
-from passwords import *
+from passwords import igor, kostya, loggs_acc
+
 # admin_account = igor
 
 
@@ -47,9 +48,9 @@ class clients_base:  # класс базы данных
             if str(self.message.chat.id) in self.worksheet.col_values(1):
                 await self.bot.send_message(admin_account.admin, ' Клиент есть в базе')
             else:
-                await self.bot.send_message(admin_account.admin, f'Клиент добавлен в базу\n'
-                                            f'База: https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_'
-                                            f'oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit#gid=0')
+                await self.bot.send_message(admin_account.admin, 'Клиент добавлен в базу\n'
+                                            'База: https://docs.google.com/spreadsheets/d/1M3PHqj06Ex1_'
+                                            'oXKuyR8CZCjl4j67qxvQUNNfcA3WjyY/edit#gid=0')
                 self.worksheet.update(f'A{worksheet_len}:F{worksheet_len}',
                                       [[self.message.chat.id, self.message.chat.username,
                                         self.message.chat.first_name, self.message.chat.last_name,
@@ -63,7 +64,7 @@ class clients_base:  # класс базы данных
             await self.bot.send_message(loggs_acc, f'Ошибка в functions/chec_and_record: {e}')
 
     async def perevod_v_bazu(self, nickname):  # функция перевода из базы потенциальных клиентов в базу старых клиентов
-        mess = await self.bot.send_message(admin_account.admin, f'загрузка..🚀')
+        mess = await self.bot.send_message(admin_account.admin, 'загрузка..🚀')
         await self.connect_to_google()
         try:
             worksheet_len3 = len(self.worksheet3.col_values(1)) + 1
@@ -80,7 +81,7 @@ class clients_base:  # класс базы данных
             await self.bot.send_message(loggs_acc, f'Ошибка в functions/perevod_v_bazu: {e}')
 
     async def rasylka_v_bazu(self, base):  # функция рассылки постов в базы
-        mess = await self.bot.send_message(admin_account.admin, f'загрузка..🚀')
+        mess = await self.bot.send_message(admin_account.admin, 'загрузка..🚀')
         await self.connect_to_google()
         try:
             if base == 'Общая база клиентов':
@@ -88,7 +89,7 @@ class clients_base:  # класс базы данных
                     try:
                         await asyncio.sleep(0.3)
                         await self.bot.copy_message(self.worksheet.col_values(1)[i], admin_account.admin, self.message.message_id)
-                    except Exception as ex:
+                    except Exception:
                         await self.bot.edit_message_text(chat_id=admin_account.admin, text=f'Босс, '
                                                          f'@{self.worksheet.col_values(2)[i]} заблочил меня \n'
                                                          f'Похоже настало время набить ебало...', message_id=mess.message_id)
@@ -100,7 +101,7 @@ class clients_base:  # класс базы данных
                         await asyncio.sleep(0.3)
                         await self.bot.copy_message(self.worksheet2.col_values(1)[i], admin_account.admin, self.message.message_id)
                         #self.bot.send_message(self.worksheet2.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
-                    except Exception as ex:
+                    except Exception:
                         await self.bot.edit_message_text(chat_id=admin_account.admin, text=f'Босс, '
                                                          f'@{self.worksheet.col_values(2)[i]} заблочил меня \n'
                                                          f'Похоже настало время набить ебало...', message_id=mess.message_id)
@@ -112,7 +113,7 @@ class clients_base:  # класс базы данных
                         await asyncio.sleep(0.3)
                         await self.bot.copy_message(self.worksheet3.col_values(1)[i], admin_account.admin, self.message.message_id)
                         #self.bot.send_message(self.worksheet3.col_values(1)[i], 'Участвовать в акции?', reply_markup=kb6)
-                    except Exception as ex:
+                    except Exception:
                         await self.bot.edit_message_text(chat_id=admin_account.admin, text=f'Босс, '
                                                          f'@{self.worksheet.col_values(2)[i]} заблочил меня \n'
                                                          f'Похоже настало время набить ебало...', message_id=mess.message_id)
