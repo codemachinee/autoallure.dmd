@@ -12,9 +12,43 @@ permissions:
   actions: read          # Разрешения для работы с действиями
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout репозиторий
+        uses: actions/checkout@v4
+
+      - name: Установка Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: установка uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Установка зависимостей
+        run: uv sync --all-extras --dev
+
+      - name: Create base_key.json from secrets
+        run: |
+          cat <<'EOF' > base_key.json
+          ${{ secrets.CONFIG_JSON }}
+          EOF
+
+      - name: Create passwords.py from secrets
+        run: |
+          cat <<'EOF' > passwords.py
+          ${{ secrets.PASWORDS_PY }}
+          EOF
+
+      - name: Запуск тестов
+        run: |
+          uv run pytest -v
+
   build_and_push_in_GHCR:
     runs-on: ubuntu-latest
-#    needs: test
+    needs: test
 
     steps:
       - name: Checkout репозиторий

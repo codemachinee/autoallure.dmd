@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="uv (autoallure.dmd)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="uv (autoallure.dmd)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="uv (autoallure_dmd)" project-jdk-type="Python SDK" />
 </project>
