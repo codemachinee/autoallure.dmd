@@ -102,7 +102,7 @@ async def main():
     scheduler = AsyncIOScheduler()
     scheduler.add_job(db.delete_all_users, "cron", day_of_week='mon-sun', hour=00, misfire_grace_time=300)
     scheduler.start()
-    await dp.start_polling(bot)
+    await dp.start_polling(bot, polling_timeout=20)
 
 if __name__ == '__main__':
     try:
