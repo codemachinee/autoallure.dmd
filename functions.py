@@ -90,9 +90,9 @@ class clients_base:  # класс базы данных
                         await asyncio.sleep(0.3)
                         await self.bot.copy_message(self.worksheet.col_values(1)[i], admin_account.admin, self.message.message_id)
                     except Exception:
-                        await self.bot.edit_message_text(chat_id=admin_account.admin, text=f'Босс, '
+                        await self.bot.bot.send_message(chat_id=admin_account.admin, text=f'Босс, '
                                                          f'@{self.worksheet.col_values(2)[i]} заблочил меня \n'
-                                                         f'Похоже настало время набить ебало...', message_id=mess.message_id)
+                                                         f'Похоже настало время набить ебало...')
                 await self.bot.edit_message_text(chat_id=admin_account.admin, text='Босс, рассылка в общую базу выполнена ✅',
                                                  message_id=mess.message_id)
             elif base == 'База потенциальных клиентов':
