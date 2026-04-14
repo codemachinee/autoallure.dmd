@@ -1,6 +1,7 @@
 import asyncio
 
 from aiogram import Bot, Dispatcher, F
+from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.filters import Command
 from aiogram.types import BotCommand
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -48,10 +49,18 @@ logger.add(
     diagnose=True       # Подробный вывод
 )
 
+
+BOT_API_TIMEOUT_SECONDS = 90
+TELEGRAM_PROXY_URL = "socks5://127.0.0.1:1080"
 token = autoallure
 # token = codemashine_test
 
-bot = Bot(token=token)
+bot_session = AiohttpSession(
+    proxy=TELEGRAM_PROXY_URL,
+    timeout=BOT_API_TIMEOUT_SECONDS,
+)
+
+bot = Bot(token=token, session=bot_session)
 dp = Dispatcher()
 
 

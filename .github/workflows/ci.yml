@@ -96,6 +96,8 @@ jobs:
             # Запускаем контейнер
             docker run --pull=always -d \
               --name autoallure_bot \
+              --restart unless-stopped \
+              --network host \
               -v /root/autoallure.dmd/passwords.py:/app/passwords.py \
               -v /root/autoallure.dmd/base_key.json:/app/base_key.json \
               -v /root/autoallure.dmd/loggs.log:/app/loggs.log \
